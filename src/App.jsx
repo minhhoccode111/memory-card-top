@@ -2,54 +2,68 @@ import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
 
-const randomTwenty = (length) => {
+const inRangePickNumberOfItems = (inRange, numberOfCards = 24) => {
   const randomNumberArray = [];
-  for (let i = 0; i < 20; i++) {
-    const random = Math.floor(Math.random() * length);
-    if (randomNumberArray.includes(random)) {
-      i--;
-    } else {
-      randomNumberArray.push(random);
-    }
+  for (let i = 0; i < numberOfCards; i++) {
+    const random = Math.floor(Math.random() * inRange);
+    if (randomNumberArray.includes(random)) i--;
+    else randomNumberArray.push(random);
   }
   return randomNumberArray;
 };
 
 const Data = () => {
   const [pokemon, setPokemon] = useState([]);
+  const [numberOfCards, setNumberOfCards] = useState(24);
 
   useEffect(() => {
-    const pokemonArrayPromises = async () => {
-      const data = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
-        {
-          mode: "cors",
-        },
-      );
-      const json = await data.json();
-      const results = json.results;
-      const randomNumberArray = randomTwenty(results.length);
-      const pokemonArray = randomNumberArray.map(async (number) => {
-        const pokemonObj = results[number];
-        const imageLinkData = await fetch(pokemonObj.url, {
-          mode: "cors",
-        });
-        const imageLinkDataJson = await imageLinkData.json();
-        const imageLink = imageLinkDataJson.sprites.front_default;
-        return { ...pokemonObj, id: uuid(), imageLink };
-      });
-      return pokemonArray.filter((item) => item.imageLink !== null);
+    const pokemonArrayPromises = async (url, index = 0) => {
+      try {
+        const data = await fetch(url, { mode: "cors" });
+        const dataJson = await data.json();
+        const results = dataJson.results;
+        // in range from 0 to results.length pick 24 numbers
+        const randomNumberArray = inRangePickNumberOfItems(
+          results.length,
+          numberOfCards + 2, // 2 extra items in case of item doesn't have image link
+        );
+        const pokemonArray = randomNumberArray
+          .reduce(async (total, number) => {
+            // const totalResolved = await Promise.resolve(total);
+            const totalResolved = await total;
+            if (totalResolved.length === numberOfCards) return totalResolved;
+            const imageLinkData = await fetch(results[number].url, {
+              mode: "cors",
+            });
+            const imageLinkDataJson = await imageLinkData.json();
+            const imageLink = imageLinkDataJson.sprites.front_default;
+            if (imageLink === null) return totalResolved;
+            return [
+              ...totalResolved,
+              { ...results[number], id: uuid(), imageLink },
+            ];
+          }, Promise.resolve([]))
+          .then((list) => {
+            console.log(list);
+            setPokemon(list);
+            return list;
+          });
+      } catch (error) {
+        console.log(error);
+        // recursive call 3 time
+        if (index === 3) return;
+        pokemonArrayPromises(url, index + 1);
+      }
     };
-    pokemonArrayPromises().then(async (promiseList) => {
-      const list = await Promise.all(promiseList);
-      console.log(list.length);
-      setPokemon(list);
-    });
-    //
+
+    pokemonArrayPromises(
+      "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
+    );
+
     return () => {
       console.log("Clean up use effect");
     };
-  }, []);
+  }, [numberOfCards]);
 
   return (
     <ul className="text-black">
