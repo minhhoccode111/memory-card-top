@@ -2,42 +2,51 @@ import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
 
+const randomTwenty = (length) => {
+  const randomNumberArray = [];
+  for (let i = 0; i < 20; i++) {
+    const random = Math.floor(Math.random() * length);
+    if (randomNumberArray.includes(random)) {
+      i--;
+    } else {
+      randomNumberArray.push(random);
+    }
+  }
+  return randomNumberArray;
+};
+
 const Data = () => {
   const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
-    const data = () =>
-      fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0", {
-        method: "GET",
-        mode: "cors",
-      })
-        .then((result) => {
-          return result.json();
-        })
-        .then((obj) => {
-          return obj.results;
-        })
-        .then((results) => {
-          const randomNumberArray = [];
-          const length = results.length;
-          for (let i = 0; i < 20; i++) {
-            const random = Math.floor(Math.random() * length);
-            if (randomNumberArray.includes(random)) {
-              i--;
-            } else {
-              randomNumberArray.push(random);
-            }
-          }
-          setPokemon(
-            results.slice(0, 12).map((item) => ({ ...item, id: uuid() })),
-          );
-        })
-        .catch((err) => {
-          console.log(err);
+    const pokemonArrayPromises = async () => {
+      const data = await fetch(
+        "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
+        {
+          mode: "cors",
+        },
+      );
+      const json = await data.json();
+      const results = json.results;
+      const randomNumberArray = randomTwenty(results.length);
+      const pokemonArray = randomNumberArray.map(async (number) => {
+        const pokemonObj = results[number];
+        const imageLinkData = await fetch(pokemonObj.url, {
+          mode: "cors",
         });
-
-    data();
-    return async () => {
+        const imageLinkDataJson = await imageLinkData.json();
+        const imageLink = imageLinkDataJson.sprites.front_default;
+        return { ...pokemonObj, id: uuid(), imageLink };
+      });
+      return pokemonArray.filter((item) => item.imageLink !== null);
+    };
+    pokemonArrayPromises().then(async (promiseList) => {
+      const list = await Promise.all(promiseList);
+      console.log(list.length);
+      setPokemon(list);
+    });
+    //
+    return () => {
       console.log("Clean up use effect");
     };
   }, []);
@@ -46,18 +55,12 @@ const Data = () => {
     <ul className="text-black">
       {pokemon.map((item) => {
         return (
-          <li key={item.id} className="text-center">
-            <p>
-              {item.name}{" "}
-              <a
-                className="text-lg underline"
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                link
-              </a>
-            </p>
+          <li key={item.id} className="flex items-center">
+            <p>{item.name} </p>
+            <img
+              src={item.imageLink}
+              alt={"A picture of " + item.name + " pokemon."}
+            />
           </li>
         );
       })}
