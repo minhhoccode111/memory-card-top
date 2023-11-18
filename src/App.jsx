@@ -11,7 +11,6 @@ const ToggleButton = ({ isOpen, buttonOnClickCb }) => {
     </button>
   );
 };
-
 const Button = ({ text, buttonOnClickCb }) => {
   return (
     <button type="button" onClick={buttonOnClickCb} className="hover-shadow">
@@ -26,11 +25,61 @@ const LoadingScreen = () => {
     </div>
   );
 };
-const MainPage = () => {};
-const Footer = () => {
-  return;
+const GameName = () => {
+  return <section></section>;
 };
-
+const Difficulty = () => {
+  return <section></section>;
+};
+const Title = () => {
+  return (
+    <section>
+      <h1></h1>
+    </section>
+  );
+};
+const HighScore = () => {
+  return <section></section>;
+};
+const Header = () => {
+  return (
+    <header>
+      <Title />
+      <HighScore />
+    </header>
+  );
+};
+const Gameboard = () => {
+  return <main></main>;
+};
+const Setting = () => {
+  return (
+    <main>
+      <Title />
+      <GameName />
+      <Difficulty />
+    </main>
+  );
+};
+const Playing = () => {
+  return (
+    <>
+      <Header />
+      <Gameboard />
+    </>
+  );
+};
+const Footer = () => {
+  return <footer className=""></footer>;
+};
+const MainPage = ({ isSetting, setIsSetting }) => {
+  return (
+    <div id="wrapper" className="h-screen bg-slate-700">
+      {isSetting ? <Setting /> : <Playing />}
+      <Footer />
+    </div>
+  );
+};
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(false);
@@ -42,10 +91,13 @@ const App = () => {
   const [numberOfCards, setNumberOfCards] = useState(6);
 
   return (
-    <div id="wrapper" className="h-screen">
-      {isLoading ? <LoadingScreen /> : <MainPage />}
-      <Footer />
-    </div>
+    <>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <MainPage isSetting={isSetting} setIsSetting={setIsSetting} />
+      )}
+    </>
   );
 };
 
