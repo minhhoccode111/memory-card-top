@@ -80,16 +80,30 @@ const DisplayScore = ({ bestScore, currentScore }) => {
     </section>
   );
 };
-const Header = () => {
+const Header = ({ bestScore, currentScore, setIsSetting }) => {
   return (
     <header>
-      <Title />
-      <DisplayScore />
+      <Title setIsSetting={setIsSetting} />
+      <DisplayScore bestScore={bestScore} currentScore={currentScore} />
     </header>
   );
 };
 const Gameboard = ({ playTurn, currentPokemonList }) => {
-  return <main className="flex-1"></main>;
+  return (
+    <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 mx-auto gap-4">
+      {currentPokemonList.map((item) => (
+        <button
+          onClick={() => playTurn(item.id)}
+          key={item.id}
+          className="flex flex-col w-48 h-56 bg-cyan-200 p-4"
+          type="button"
+        >
+          <img src={item.imageLink} alt={"An image of " + item.name} />
+          <p>{item.name}</p>
+        </button>
+      ))}
+    </main>
+  );
 };
 const Setting = () => {
   return (
@@ -131,18 +145,22 @@ const Footer = ({
   return (
     <footer className="flex">
       <ToggleButton
+        text={"Sound"}
         isOpen={isSoundOn}
         buttonOnClickCb={() => setIsSoundOn(!isSoundOn)}
       />
       <ToggleButton
+        text={"Music"}
         isOpen={isMusicOn}
         buttonOnClickCb={() => setIsMusicOn(!isMusicOn)}
       />
       <ToggleButton
+        text={"Background video"}
         isOpen={isPlayingVideo}
         buttonOnClickCb={() => setIsPlayingVideo(!isPlayingVideo)}
       />
       <ToggleButton
+        text={"About"}
         isOpen={isDisplayAbout}
         buttonOnClickCb={() => setIsDisplayAbout(!isDisplayAbout)}
       />
@@ -206,8 +224,8 @@ const App = () => {
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
   const [isLoading, _setIsLoading] = useState(false);
-  const [isDisplayWin, setIsDisplayWin] = useState(false);
-  const [isDisplayLose, setIsDisplayLose] = useState(false);
+  const [isDisplayWin, _setIsDisplayWin] = useState(false);
+  const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 6; // 96 FIXME
@@ -218,8 +236,9 @@ const App = () => {
   const [bestScore, _setBestScore] = useState(0);
   const currentScore = _selectedIdList.length;
   const _randomPickInPreload = () => {
-    const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
+    const tmp = pickItems(preloadPokemonNumber, currentDifficulty).map(
       (number) => {
+        console.log(number);
         const item = preloadPokemonList[number];
         return { ...item };
       },
@@ -227,16 +246,18 @@ const App = () => {
     _setCurrentPokemonList(tmp);
   };
   const playAgain = () => {
-    setIsDisplayLose(false);
-    setIsDisplayWin(false);
+    _setIsDisplayLose(false);
+    _setIsDisplayWin(false);
     _setSelectedIdList([]);
     _randomPickInPreload();
   };
   const playTurn = (pokemonId) => {
     if (_selectedIdList.includes(pokemonId)) {
-      setIsDisplayLose(true);
+      _setIsDisplayLose(true);
     } else {
       if (currentScore === bestScore) _setBestScore(bestScore + 1);
+      const nextScore = currentScore + 1;
+      if (nextScore === currentDifficulty) _setIsDisplayWin(true);
       _setSelectedIdList([..._selectedIdList, pokemonId]);
       _setCurrentPokemonList(shuffle(currentPokemonList));
     }
