@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
 
-const inRangePickNumberOfItems = (inRange, numberOfCards = 24) => {
+const inRangePickNumberOfItems = (inRange, numberOfItems = 24) => {
   const randomNumberArray = [];
-  for (let i = 0; i < numberOfCards; i++) {
+  for (let i = 0; i < numberOfItems; i++) {
     const random = Math.floor(Math.random() * inRange);
     if (randomNumberArray.includes(random)) i--;
     else randomNumberArray.push(random);
@@ -12,10 +13,17 @@ const inRangePickNumberOfItems = (inRange, numberOfCards = 24) => {
   return randomNumberArray;
 };
 
-const Data = () => {
-  const [pokemon, setPokemon] = useState([]);
-  const [numberOfCards, setNumberOfCards] = useState(24);
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return [...array];
+};
 
+const Data = ({ numberOfCards, pokemon, setPokemon }) => {
+  // const [numberOfCards, setNumberOfCards] = useState(24);
+  console.log(numberOfCards);
   useEffect(() => {
     const pokemonArrayPromises = async (url, index = 0) => {
       try {
@@ -23,13 +31,11 @@ const Data = () => {
         const dataJson = await data.json();
         const results = dataJson.results;
         // in range from 0 to results.length pick 24 numbers
-        const randomNumberArray = inRangePickNumberOfItems(
+        inRangePickNumberOfItems(
           results.length,
           numberOfCards + 2, // 2 extra items in case of item doesn't have image link
-        );
-        const pokemonArray = randomNumberArray
+        )
           .reduce(async (total, number) => {
-            // const totalResolved = await Promise.resolve(total);
             const totalResolved = await total;
             if (totalResolved.length === numberOfCards) return totalResolved;
             const imageLinkData = await fetch(results[number].url, {
@@ -50,7 +56,7 @@ const Data = () => {
           });
       } catch (error) {
         console.log(error);
-        // recursive call 3 time
+        // recursive try 3 more times
         if (index === 3) return;
         pokemonArrayPromises(url, index + 1);
       }
@@ -63,7 +69,7 @@ const Data = () => {
     return () => {
       console.log("Clean up use effect");
     };
-  }, [numberOfCards]);
+  }, [numberOfCards, setPokemon]);
 
   return (
     <ul className="text-black">
@@ -82,11 +88,20 @@ const Data = () => {
   );
 };
 const App = () => {
+  // const [pokemon, setPokemon] = useState([]);
+  const [numberOfCards, setNumberOfCards] = useState(24);
+  const [pokemon, setPokemon] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <div id="wrapper" className="">
       <header></header>
       <main>
-        <Data />
+        <Data
+          numberOfCards={numberOfCards}
+          pokemon={pokemon}
+          setPokemon={setPokemon}
+        />
       </main>
       <footer></footer>
     </div>
