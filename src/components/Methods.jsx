@@ -1,4 +1,7 @@
-export const inRangePickNumberOfItems = (inRange, numberOfItems = 24) => {
+export const pickItems = function inRangePickNumberOfItems(
+  inRange,
+  numberOfItems = 24,
+) {
   const randomNumberArray = [];
   for (let i = 0; i < numberOfItems; i++) {
     const random = Math.floor(Math.random() * inRange);

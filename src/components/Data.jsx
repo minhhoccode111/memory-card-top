@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
-import { inRangePickNumberOfItems } from "./Methods";
+import { pickItems } from "./Methods";
 import { v4 as uuid } from "uuid";
 
 const Data = ({ numberOfCards, pokemon, setPokemon }) => {
@@ -11,7 +11,7 @@ const Data = ({ numberOfCards, pokemon, setPokemon }) => {
         const dataJson = await data.json();
         const results = dataJson.results;
         // in range from 0 to results.length pick 24 numbers
-        inRangePickNumberOfItems(
+        pickItems(
           results.length,
           numberOfCards + 2, // 2 extra items in case of item doesn't have image link
         )

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
-import Data from "./components/Data";
+import { pickItems, shuffle } from "./components/Methods";
 
 const ToggleButton = ({ isOpen, buttonOnClickCb }) => {
   return (
@@ -49,7 +49,7 @@ const Header = () => {
     </header>
   );
 };
-const Gameboard = () => {
+const Gameboard = ({}) => {
   return <main></main>;
 };
 const Setting = () => {
@@ -87,8 +87,62 @@ const App = () => {
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
-  const [pokemonList, setPokemonList] = useState([]);
-  const [numberOfCards, setNumberOfCards] = useState(6);
+  const [preloadPokemonList, setPreloadPokemonList] = useState([]);
+  const preloadPokemonNumber = 6; // 96 FIXME
+  const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48, 96
+  const [currentPokemonList, setCurrentPokemonList] = useState([]);
+  const [selectedIdList, setSelectedIdList] = useState([]);
+  useEffect(() => {
+    const pokemonArrayPromises = async (url, index = 0) => {
+      try {
+        const data = await fetch(url, { mode: "cors" });
+        const dataJson = await data.json();
+        const results = dataJson.results;
+        pickItems(
+          results.length,
+          preloadPokemonNumber + 2, // 2 extra items in case of item doesn't have image link
+        )
+          .reduce(async (total, number) => {
+            const totalResolved = await total;
+            const len = totalResolved.length;
+            if (len === preloadPokemonNumber) return totalResolved;
+            const imageLinkData = await fetch(results[number].url, {
+              mode: "cors",
+            });
+            const imageLinkDataJson = await imageLinkData.json();
+            const imageLink = imageLinkDataJson.sprites.front_default;
+            if (imageLink === null) return totalResolved;
+            return [
+              ...totalResolved,
+              { name: results[number].name, id: uuid(), imageLink },
+            ];
+          }, Promise.resolve([]))
+          .then((list) => {
+            console.log(list);
+            setPreloadPokemonList(list);
+            const tmp = pickItems(list.length, currentDifficulty).map(
+              (number) => {
+                const item = list[number];
+                return { ...item };
+              },
+            );
+            console.log(tmp);
+            setCurrentPokemonList(tmp);
+          });
+      } catch (error) {
+        console.log(error);
+        // recursive try 3 more times
+        if (index === 3) return;
+        pokemonArrayPromises(url, index + 1);
+      }
+    };
+    pokemonArrayPromises(
+      "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
+    );
+    return () => {
+      console.log("Clean up useEffect in App component");
+    };
+  }, [currentDifficulty]);
 
   return (
     <>
