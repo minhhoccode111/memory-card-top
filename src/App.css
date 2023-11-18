@@ -1,3 +1,39 @@
 html {
   /* background: #000; */
 }
+
+.loading {
+  height: 20vw;
+  width: 20vw;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 50%;
+  border: 2vw solid rgb(0, 0, 0);
+  border-top-color: #ff0000;
+  border-bottom-color: #ff0000;
+  animation: spinner3 800ms ease infinite;
+}
+
+@keyframes spinner3 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hover-shadow {
+  color: #1d9af2;
+  background-color: #292d3e;
+  border: 1px solid #1d9af2;
+  border-radius: 4px;
+  padding: 10px 16px;
+  cursor: pointer;
+  /* height: 32px; */
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+.hover-shadow:hover {
+  box-shadow:
+    1px 1px #53a7ea,
+    2px 2px #53a7ea,
+    3px 3px #53a7ea;
+  transform: translateX(-3px);
+}
