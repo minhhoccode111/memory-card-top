@@ -81,11 +81,15 @@ const Setting = () => {
     </main>
   );
 };
-const Playing = () => {
+const Playing = ({ setIsSetting, highScore, playTurn, currentScore }) => {
   return (
     <>
-      <Header />
-      <Gameboard />
+      <Header
+        highScore={highScore}
+        currentScore={currentScore}
+        setIsSetting={setIsSetting}
+      />
+      <Gameboard playTurn={playTurn} />
     </>
   );
 };
@@ -94,40 +98,72 @@ const Footer = () => {
 };
 const MainPage = ({
   playTurn,
+  isSoundOn,
+  isMusicOn,
+  highScore,
   playAgain,
   isSetting,
+  setIsSoundOn,
+  setIsMusicOn,
+  currentScore,
   isDisplayWin,
   setIsSetting,
   isDisplayLose,
+  isPlayingVideo,
+  isDisplayAbout,
+  setIsDisplayAbout,
+  setIsPlayingVideo,
+  currentPokemonList,
+  setCurrentDifficulty,
 }) => {
   let jsxToDisplay;
-  if (isSetting) jsxToDisplay = <Setting />;
+  if (isSetting)
+    jsxToDisplay = <Setting setCurrentDifficulty={setCurrentDifficulty} />;
   else if (isDisplayLose) jsxToDisplay = <LosingScreen playAgain={playAgain} />;
   else if (isDisplayWin) jsxToDisplay = <WinningScreen playAgain={playAgain} />;
-  else jsxToDisplay = <Playing />;
+  else
+    jsxToDisplay = (
+      <Playing
+        playTurn={playTurn}
+        highScore={highScore}
+        setIsSetting={setIsSetting}
+        currentScore={currentScore}
+        currentPokemonList={currentPokemonList}
+      />
+    );
   return (
     <div id="wrapper" className="h-screen bg-slate-700">
       {jsxToDisplay}
-      <Footer />
+      <Footer
+        isSoundOn={isSoundOn}
+        isMusicOn={isMusicOn}
+        setIsMusicOn={setIsMusicOn}
+        setIsSoundOn={setIsSoundOn}
+        isPlayingVideo={isPlayingVideo}
+        isDisplayAbout={isDisplayAbout}
+        setIsDisplayAbout={setIsDisplayAbout}
+        setIsPlayingVideo={setIsPlayingVideo}
+      />
     </div>
   );
 };
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
-  const [isDisplayAbout, setIsDisplayAbout] = useState(false);
+  const [isSetting, setIsSetting] = useState(false);
+  const [isLoading, _setIsLoading] = useState(false);
   const [isDisplayWin, setIsDisplayWin] = useState(false);
   const [isDisplayLose, setIsDisplayLose] = useState(false);
-  const [isSetting, setIsSetting] = useState(false);
-  const [preloadPokemonList, setPreloadPokemonList] = useState([]);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 6; // 96 FIXME
+  const [preloadPokemonList, setPreloadPokemonList] = useState([]);
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48, 96
-  const [currentPokemonList, setCurrentPokemonList] = useState([]);
-  const [selectedIdList, setSelectedIdList] = useState([]);
-  const [HighScore, setHighScore] = useState(0);
-  const currentScore = selectedIdList.length;
+  const [currentPokemonList, _setCurrentPokemonList] = useState([]);
+  const [_selectedIdList, _setSelectedIdList] = useState([]);
+  const [highScore, _setHighScore] = useState(0);
+  const currentScore = _selectedIdList.length;
   const _randomPickInPreload = () => {
     const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
       (number) => {
@@ -135,23 +171,23 @@ const App = () => {
         return { ...item };
       },
     );
-    setCurrentPokemonList(tmp);
+    _setCurrentPokemonList(tmp);
   };
   const playAgain = () => {
     setIsDisplayLose(false);
     setIsDisplayWin(false);
-    setSelectedIdList([]);
+    _setSelectedIdList([]);
     _randomPickInPreload();
   };
   const playTurn = (pokemonId) => {
-    if (selectedIdList.includes(pokemonId)) {
+    if (_selectedIdList.includes(pokemonId)) {
       setIsDisplayLose(true);
     } else {
-      setSelectedIdList([...selectedIdList, pokemonId]);
-      setCurrentPokemonList(shuffle(currentPokemonList));
+      if (currentScore === highScore) _setHighScore(highScore + 1);
+      _setSelectedIdList([..._selectedIdList, pokemonId]);
+      _setCurrentPokemonList(shuffle(currentPokemonList));
     }
   };
-
   useEffect(() => {
     const pokemonArrayPromises = async (url, index = 0) => {
       try {
@@ -178,7 +214,6 @@ const App = () => {
             ];
           }, Promise.resolve([]))
           .then((list) => {
-            console.log(list);
             setPreloadPokemonList(list);
             const tmp = pickItems(list.length, currentDifficulty).map(
               (number) => {
@@ -187,7 +222,7 @@ const App = () => {
               },
             );
             console.log(tmp);
-            setCurrentPokemonList(tmp);
+            _setCurrentPokemonList(tmp);
           });
       } catch (error) {
         console.log(error);
@@ -199,23 +234,36 @@ const App = () => {
     pokemonArrayPromises(
       "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
     );
-    return () => {
-      console.log("Clean up useEffect in App component");
-    };
   }, [currentDifficulty]);
-
+  useEffect(() => {
+    setTimeout(() => {
+      _setIsLoading(false);
+    }, 3500);
+  }, []);
   return (
     <>
       {isLoading ? (
         <LoadingScreen />
       ) : (
         <MainPage
+          isSoundOn={isSoundOn}
+          setIsSoundOn={setIsSoundOn}
+          isMusicOn={isMusicOn}
+          setIsMusicOn={setIsMusicOn}
+          isPlayingVideo={isPlayingVideo}
+          setIsPlayingVideo={setIsPlayingVideo}
+          isDisplayAbout={isDisplayAbout}
+          setIsDisplayAbout={setIsDisplayAbout}
+          isDisplayWin={isDisplayWin}
+          isDisplayLose={isDisplayLose}
           isSetting={isSetting}
           setIsSetting={setIsSetting}
+          setCurrentDifficulty={setCurrentDifficulty}
+          currentPokemonList={currentPokemonList}
+          highScore={highScore}
+          currentScore={currentScore}
           playAgain={playAgain}
           playTurn={playTurn}
-          isDisplayLose={isDisplayLose}
-          isDisplayWin={isDisplayWin}
         />
       )}
     </>
