@@ -25,6 +25,26 @@ const LoadingScreen = () => {
     </div>
   );
 };
+const WinningScreen = ({ playAgain }) => {
+  return (
+    <section>
+      <p>You win!</p>
+      <div>
+        <Button text={"Play again?"} buttonOnClickCb={playAgain} />
+      </div>
+    </section>
+  );
+};
+const LosingScreen = ({ playAgain }) => {
+  return (
+    <section>
+      <p>You lose!</p>
+      <div>
+        <Button text={"Play again?"} buttonOnClickCb={playAgain} />
+      </div>
+    </section>
+  );
+};
 const GameName = () => {
   return <section></section>;
 };
@@ -72,10 +92,22 @@ const Playing = () => {
 const Footer = () => {
   return <footer className=""></footer>;
 };
-const MainPage = ({ isSetting, setIsSetting }) => {
+const MainPage = ({
+  playTurn,
+  playAgain,
+  isSetting,
+  isDisplayWin,
+  setIsSetting,
+  isDisplayLose,
+}) => {
+  let jsxToDisplay;
+  if (isSetting) jsxToDisplay = <Setting />;
+  else if (isDisplayLose) jsxToDisplay = <LosingScreen playAgain={playAgain} />;
+  else if (isDisplayWin) jsxToDisplay = <WinningScreen playAgain={playAgain} />;
+  else jsxToDisplay = <Playing />;
   return (
     <div id="wrapper" className="h-screen bg-slate-700">
-      {isSetting ? <Setting /> : <Playing />}
+      {jsxToDisplay}
       <Footer />
     </div>
   );
@@ -86,12 +118,40 @@ const App = () => {
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
-  const [isSetting, setIsSetting] = useState(true);
+  const [isDisplayWin, setIsDisplayWin] = useState(false);
+  const [isDisplayLose, setIsDisplayLose] = useState(false);
+  const [isSetting, setIsSetting] = useState(false);
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
   const preloadPokemonNumber = 6; // 96 FIXME
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48, 96
   const [currentPokemonList, setCurrentPokemonList] = useState([]);
   const [selectedIdList, setSelectedIdList] = useState([]);
+  const [HighScore, setHighScore] = useState(0);
+  const currentScore = selectedIdList.length;
+  const _randomPickInPreload = () => {
+    const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
+      (number) => {
+        const item = preloadPokemonList[number];
+        return { ...item };
+      },
+    );
+    setCurrentPokemonList(tmp);
+  };
+  const playAgain = () => {
+    setIsDisplayLose(false);
+    setIsDisplayWin(false);
+    setSelectedIdList([]);
+    _randomPickInPreload();
+  };
+  const playTurn = (pokemonId) => {
+    if (selectedIdList.includes(pokemonId)) {
+      setIsDisplayLose(true);
+    } else {
+      setSelectedIdList([...selectedIdList, pokemonId]);
+      setCurrentPokemonList(shuffle(currentPokemonList));
+    }
+  };
+
   useEffect(() => {
     const pokemonArrayPromises = async (url, index = 0) => {
       try {
@@ -149,7 +209,14 @@ const App = () => {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <MainPage isSetting={isSetting} setIsSetting={setIsSetting} />
+        <MainPage
+          isSetting={isSetting}
+          setIsSetting={setIsSetting}
+          playAgain={playAgain}
+          playTurn={playTurn}
+          isDisplayLose={isDisplayLose}
+          isDisplayWin={isDisplayWin}
+        />
       )}
     </>
   );
