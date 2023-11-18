@@ -4,18 +4,26 @@ import { v4 as uuid } from "uuid";
 import "./App.css";
 import { pickItems, shuffle } from "./components/Methods";
 
-const ToggleButton = ({ isOpen, buttonOnClickCb }) => {
+const ToggleButton = ({ text, isOpen, buttonOnClickCb }) => {
   return (
-    <button type="button" onClick={buttonOnClickCb} className={"hover-shadow"}>
-      {isOpen ? "Open" : "Close"}
-    </button>
+    <div>
+      <button
+        type="button"
+        onClick={buttonOnClickCb}
+        className={"hover-shadow"}
+      >
+        {text} {isOpen ? " is on" : " is off"}
+      </button>
+    </div>
   );
 };
 const Button = ({ text, buttonOnClickCb }) => {
   return (
-    <button type="button" onClick={buttonOnClickCb} className="hover-shadow">
-      {text}
-    </button>
+    <div>
+      <button type="button" onClick={buttonOnClickCb} className="hover-shadow">
+        {text}
+      </button>
+    </div>
   );
 };
 const LoadingScreen = () => {
@@ -58,19 +66,30 @@ const Title = () => {
     </section>
   );
 };
-const HighScore = () => {
-  return <section></section>;
+const CurrentScore = ({ currentScore }) => {
+  return <div>{currentScore}</div>;
+};
+const BestScore = ({ bestScore }) => {
+  return <div>{bestScore}</div>;
+};
+const DisplayScore = ({ bestScore, currentScore }) => {
+  return (
+    <section>
+      <BestScore bestScore={bestScore} />
+      <CurrentScore currentScore={currentScore} />
+    </section>
+  );
 };
 const Header = () => {
   return (
     <header>
       <Title />
-      <HighScore />
+      <DisplayScore />
     </header>
   );
 };
-const Gameboard = ({}) => {
-  return <main></main>;
+const Gameboard = ({ playTurn, currentPokemonList }) => {
+  return <main className="flex-1"></main>;
 };
 const Setting = () => {
   return (
@@ -81,26 +100,60 @@ const Setting = () => {
     </main>
   );
 };
-const Playing = ({ setIsSetting, highScore, playTurn, currentScore }) => {
+const Playing = ({
+  playTurn,
+  bestScore,
+  setIsSetting,
+  currentScore,
+  currentPokemonList,
+}) => {
   return (
     <>
       <Header
-        highScore={highScore}
+        bestScore={bestScore}
         currentScore={currentScore}
         setIsSetting={setIsSetting}
       />
-      <Gameboard playTurn={playTurn} />
+      <Gameboard playTurn={playTurn} currentPokemonList={currentPokemonList} />
     </>
   );
 };
-const Footer = () => {
-  return <footer className=""></footer>;
+const Footer = ({
+  isSoundOn,
+  isMusicOn,
+  setIsSoundOn,
+  setIsMusicOn,
+  isPlayingVideo,
+  isDisplayAbout,
+  setIsPlayingVideo,
+  setIsDisplayAbout,
+}) => {
+  return (
+    <footer className="flex">
+      <ToggleButton
+        isOpen={isSoundOn}
+        buttonOnClickCb={() => setIsSoundOn(!isSoundOn)}
+      />
+      <ToggleButton
+        isOpen={isMusicOn}
+        buttonOnClickCb={() => setIsMusicOn(!isMusicOn)}
+      />
+      <ToggleButton
+        isOpen={isPlayingVideo}
+        buttonOnClickCb={() => setIsPlayingVideo(!isPlayingVideo)}
+      />
+      <ToggleButton
+        isOpen={isDisplayAbout}
+        buttonOnClickCb={() => setIsDisplayAbout(!isDisplayAbout)}
+      />
+    </footer>
+  );
 };
 const MainPage = ({
   playTurn,
   isSoundOn,
   isMusicOn,
-  highScore,
+  bestScore,
   playAgain,
   isSetting,
   setIsSoundOn,
@@ -125,14 +178,14 @@ const MainPage = ({
     jsxToDisplay = (
       <Playing
         playTurn={playTurn}
-        highScore={highScore}
+        bestScore={bestScore}
         setIsSetting={setIsSetting}
         currentScore={currentScore}
         currentPokemonList={currentPokemonList}
       />
     );
   return (
-    <div id="wrapper" className="h-screen bg-slate-700">
+    <div id="wrapper" className="h-screen bg-slate-700 flex flex-col">
       {jsxToDisplay}
       <Footer
         isSoundOn={isSoundOn}
@@ -162,7 +215,7 @@ const App = () => {
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48, 96
   const [currentPokemonList, _setCurrentPokemonList] = useState([]);
   const [_selectedIdList, _setSelectedIdList] = useState([]);
-  const [highScore, _setHighScore] = useState(0);
+  const [bestScore, _setBestScore] = useState(0);
   const currentScore = _selectedIdList.length;
   const _randomPickInPreload = () => {
     const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
@@ -183,7 +236,7 @@ const App = () => {
     if (_selectedIdList.includes(pokemonId)) {
       setIsDisplayLose(true);
     } else {
-      if (currentScore === highScore) _setHighScore(highScore + 1);
+      if (currentScore === bestScore) _setBestScore(bestScore + 1);
       _setSelectedIdList([..._selectedIdList, pokemonId]);
       _setCurrentPokemonList(shuffle(currentPokemonList));
     }
@@ -260,7 +313,7 @@ const App = () => {
           setIsSetting={setIsSetting}
           setCurrentDifficulty={setCurrentDifficulty}
           currentPokemonList={currentPokemonList}
-          highScore={highScore}
+          bestScore={bestScore}
           currentScore={currentScore}
           playAgain={playAgain}
           playTurn={playTurn}
