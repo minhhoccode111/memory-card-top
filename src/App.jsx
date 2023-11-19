@@ -9,6 +9,7 @@ import * as Icon from "./components/Icons";
 import BackgroundVideo from "./assets/video/background-pokemon-unique.mp4";
 import BackgroundMusic from "./assets/sound/background-pokemon-unique.mp3";
 import ClickSound from "./assets/sound/click.wav";
+import FlipSound from "./assets/sound/flip.mp3";
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
@@ -30,7 +31,14 @@ const App = () => {
   const playClick = () => {
     if (isSoundOn) {
       const audio = new Audio(ClickSound);
-      audio.volume = 0.3;
+      audio.volume = 0.15;
+      audio.play();
+    }
+  };
+  const playFlip = () => {
+    if (isSoundOn) {
+      const audio = new Audio(FlipSound);
+      audio.volume = 0.2;
       audio.play();
     }
   };
@@ -58,6 +66,7 @@ const App = () => {
       if (nextScore === currentDifficulty) _setIsDisplayWin(true);
       _setSelectedIdList([..._selectedIdList, pokemonId]);
       _setCurrentPokemonList(shuffle(currentPokemonList));
+      playFlip();
     }
   };
 

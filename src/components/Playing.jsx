@@ -18,11 +18,7 @@ const Playing = ({
         currentScore={currentScore}
         setIsSetting={setIsSetting}
       />
-      <Gameboard
-        playTurn={playTurn}
-        playClick={playClick}
-        currentPokemonList={currentPokemonList}
-      />
+      <Gameboard playTurn={playTurn} currentPokemonList={currentPokemonList} />
     </>
   );
 };
