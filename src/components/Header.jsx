@@ -4,7 +4,7 @@ import DisplayScore from "./DisplayScore";
 
 const Header = ({ bestScore, currentScore, setIsSetting }) => {
   return (
-    <header>
+    <header className="flex items-center justify-between">
       <Title buttonOnClickCb={() => setIsSetting(true)} />
       <DisplayScore bestScore={bestScore} currentScore={currentScore} />
     </header>

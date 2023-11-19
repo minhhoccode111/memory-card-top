@@ -16,9 +16,9 @@ const App = () => {
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
-  const preloadPokemonNumber = 48; // 48 FIXME
+  const preloadPokemonNumber = 24; // 48 FIXME
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
-  const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48
+  const [currentDifficulty, setCurrentDifficulty] = useState(6); // 6, 10, 16, 24
   const [currentPokemonList, _setCurrentPokemonList] = useState([]);
   const [_selectedIdList, _setSelectedIdList] = useState([]);
   const [bestScore, _setBestScore] = useState(0);
@@ -26,7 +26,6 @@ const App = () => {
   const _randomPickInPreload = () => {
     const tmp = pickItems(preloadPokemonNumber, currentDifficulty).map(
       (number) => {
-        console.log(number);
         const item = preloadPokemonList[number];
         return { ...item };
       },
@@ -90,16 +89,20 @@ const App = () => {
     );
   }, []);
   useEffect(() => {
-    const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
-      (number) => {
-        const item = preloadPokemonList[number];
-        return { ...item };
-      },
-    );
-    _setCurrentPokemonList(tmp);
-    return () => {
-      console.log("change current difficult");
-    };
+    try {
+      const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
+        (number) => {
+          const item = preloadPokemonList[number];
+          return { ...item };
+        },
+      );
+      _setCurrentPokemonList(tmp);
+      return () => {
+        // console.log("change current difficult");
+      };
+    } catch (error) {
+      // console.log(error);
+    }
   }, [currentDifficulty, preloadPokemonList]);
   useEffect(() => {
     setTimeout(() => {

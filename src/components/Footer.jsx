@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import ToggleButton from "./ToggleButton";
+import Button from "./Button";
 const Footer = ({
   isSoundOn,
   isMusicOn,
+  setIsSetting,
   setIsSoundOn,
   setIsMusicOn,
   isPlayingVideo,
@@ -32,6 +34,7 @@ const Footer = ({
         isOpen={isDisplayAbout}
         buttonOnClickCb={() => setIsDisplayAbout(!isDisplayAbout)}
       />
+      <Button text={"setting"} buttonOnClickCb={() => setIsSetting(false)} />
     </footer>
   );
 };

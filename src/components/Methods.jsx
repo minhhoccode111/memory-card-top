@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 export const pickItems = function inRangePickNumberOfItems(
   inRange,
-  numberOfItems = 24,
+  numberOfItems = 6,
 ) {
+  if (inRange < numberOfItems || !inRange) return;
   const randomNumberArray = [];
   for (let i = 0; i < numberOfItems; i++) {
     const random = Math.floor(Math.random() * inRange);

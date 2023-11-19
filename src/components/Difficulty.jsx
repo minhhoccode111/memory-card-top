@@ -5,33 +5,33 @@ const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
     <section className="">
       <Button
         buttonOnClickCb={() => {
-          playAgain();
-          setIsSetting(false);
           setCurrentDifficulty(6);
+          setIsSetting(false);
+          playAgain();
         }}
         text={"easy"}
       />
       <Button
         buttonOnClickCb={() => {
-          playAgain();
+          setCurrentDifficulty(10);
           setIsSetting(false);
-          setCurrentDifficulty(12);
+          playAgain();
         }}
         text={"medium"}
       />
       <Button
         buttonOnClickCb={() => {
-          playAgain();
+          setCurrentDifficulty(16);
           setIsSetting(false);
-          setCurrentDifficulty(24);
+          playAgain();
         }}
         text={"hard"}
       />
       <Button
         buttonOnClickCb={() => {
-          playAgain();
+          setCurrentDifficulty(24);
           setIsSetting(false);
-          setCurrentDifficulty(48);
+          playAgain();
         }}
         text={"insane"}
       />

@@ -52,6 +52,7 @@ const MainPage = ({
       <Footer
         isSoundOn={isSoundOn}
         isMusicOn={isMusicOn}
+        setIsSetting={setIsSetting}
         setIsMusicOn={setIsMusicOn}
         setIsSoundOn={setIsSoundOn}
         isPlayingVideo={isPlayingVideo}
