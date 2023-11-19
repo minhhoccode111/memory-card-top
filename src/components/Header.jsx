@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import Title from "./Title";
-import HighScore from "./HighScore";
+import DisplayScore from "./DisplayScore";
 
-const Header = () => {
+const Header = ({ bestScore, currentScore, setIsSetting }) => {
   return (
     <header>
-      <Title />
-      <HighScore />
+      <Title buttonOnClickCb={() => setIsSetting(true)} />
+      <DisplayScore bestScore={bestScore} currentScore={currentScore} />
     </header>
   );
 };

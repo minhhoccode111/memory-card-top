@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const LoadingScreen = () => {
   return (
     <div className="h-screen bg-cyan-50 flex items-center justify-center">

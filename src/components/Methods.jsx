@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export const pickItems = function inRangePickNumberOfItems(
   inRange,
   numberOfItems = 24,

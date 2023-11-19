@@ -1,11 +1,22 @@
+/* eslint-disable react/prop-types */
 import Header from "./Header";
 import Gameboard from "./Gameboard";
 
-const Playing = () => {
+const Playing = ({
+  playTurn,
+  bestScore,
+  setIsSetting,
+  currentScore,
+  currentPokemonList,
+}) => {
   return (
     <>
-      <Header />
-      <Gameboard />
+      <Header
+        bestScore={bestScore}
+        currentScore={currentScore}
+        setIsSetting={setIsSetting}
+      />
+      <Gameboard playTurn={playTurn} currentPokemonList={currentPokemonList} />
     </>
   );
 };

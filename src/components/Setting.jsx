@@ -1,13 +1,18 @@
+/* eslint-disable react/prop-types */
 import Title from "./Title";
 import GameName from "./GameName";
 import Difficulty from "./Difficulty";
 
-const Setting = () => {
+const Setting = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
   return (
-    <main>
+    <main className="flex flex-col items-center justify-center flex-1">
       <Title />
       <GameName />
-      <Difficulty />
+      <Difficulty
+        playAgain={playAgain}
+        setIsSetting={setIsSetting}
+        setCurrentDifficulty={setCurrentDifficulty}
+      />
     </main>
   );
 };
