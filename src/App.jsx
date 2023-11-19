@@ -12,7 +12,8 @@ const ToggleButton = ({ text, isOpen, buttonOnClickCb }) => {
         onClick={buttonOnClickCb}
         className={"hover-shadow"}
       >
-        {text} {isOpen ? " is on" : " is off"}
+        <span className="capitalize">{text}</span>
+        {isOpen ? " is on" : " is off"}
       </button>
     </div>
   );
@@ -20,7 +21,11 @@ const ToggleButton = ({ text, isOpen, buttonOnClickCb }) => {
 const Button = ({ text, buttonOnClickCb }) => {
   return (
     <div>
-      <button type="button" onClick={buttonOnClickCb} className="hover-shadow">
+      <button
+        type="button"
+        onClick={buttonOnClickCb}
+        className="hover-shadow capitalize"
+      >
         {text}
       </button>
     </div>
@@ -54,16 +59,55 @@ const LosingScreen = ({ playAgain }) => {
   );
 };
 const GameName = () => {
-  return <section></section>;
-};
-const Difficulty = () => {
-  return <section></section>;
-};
-const Title = () => {
   return (
     <section>
-      <h1></h1>
+      <h2 className="text-2xl">Memory Game</h2>
     </section>
+  );
+};
+const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
+  return (
+    <section className="">
+      <Button
+        buttonOnClickCb={() => {
+          playAgain();
+          setIsSetting(false);
+          setCurrentDifficulty(6);
+        }}
+        text={"easy"}
+      />
+      <Button
+        buttonOnClickCb={() => {
+          playAgain();
+          setIsSetting(false);
+          setCurrentDifficulty(12);
+        }}
+        text={"medium"}
+      />
+      <Button
+        buttonOnClickCb={() => {
+          playAgain();
+          setIsSetting(false);
+          setCurrentDifficulty(24);
+        }}
+        text={"hard"}
+      />
+      <Button
+        buttonOnClickCb={() => {
+          playAgain();
+          setIsSetting(false);
+          setCurrentDifficulty(48);
+        }}
+        text={"insane"}
+      />
+    </section>
+  );
+};
+const Title = ({ buttonOnClickCb }) => {
+  return (
+    <button type="button" onClick={buttonOnClickCb}>
+      <h1 className="text-4xl">Unique Pokemon</h1>
+    </button>
   );
 };
 const CurrentScore = ({ currentScore }) => {
@@ -83,14 +127,14 @@ const DisplayScore = ({ bestScore, currentScore }) => {
 const Header = ({ bestScore, currentScore, setIsSetting }) => {
   return (
     <header>
-      <Title setIsSetting={setIsSetting} />
+      <Title buttonOnClickCb={() => setIsSetting(true)} />
       <DisplayScore bestScore={bestScore} currentScore={currentScore} />
     </header>
   );
 };
 const Gameboard = ({ playTurn, currentPokemonList }) => {
   return (
-    <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 mx-auto gap-4">
+    <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 mx-auto gap-4 overflow-y-auto">
       {currentPokemonList.map((item) => (
         <button
           onClick={() => playTurn(item.id)}
@@ -105,12 +149,16 @@ const Gameboard = ({ playTurn, currentPokemonList }) => {
     </main>
   );
 };
-const Setting = () => {
+const Setting = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
   return (
-    <main>
+    <main className="flex flex-col items-center justify-center flex-1">
       <Title />
       <GameName />
-      <Difficulty />
+      <Difficulty
+        playAgain={playAgain}
+        setIsSetting={setIsSetting}
+        setCurrentDifficulty={setCurrentDifficulty}
+      />
     </main>
   );
 };
@@ -189,7 +237,13 @@ const MainPage = ({
 }) => {
   let jsxToDisplay;
   if (isSetting)
-    jsxToDisplay = <Setting setCurrentDifficulty={setCurrentDifficulty} />;
+    jsxToDisplay = (
+      <Setting
+        playAgain={playAgain}
+        setIsSetting={setIsSetting}
+        setCurrentDifficulty={setCurrentDifficulty}
+      />
+    );
   else if (isDisplayLose) jsxToDisplay = <LosingScreen playAgain={playAgain} />;
   else if (isDisplayWin) jsxToDisplay = <WinningScreen playAgain={playAgain} />;
   else
@@ -228,9 +282,9 @@ const App = () => {
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
-  const preloadPokemonNumber = 6; // 96 FIXME
+  const preloadPokemonNumber = 48; // 48 FIXME
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
-  const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48, 96
+  const [currentDifficulty, setCurrentDifficulty] = useState(6); // 12, 24, 48
   const [currentPokemonList, _setCurrentPokemonList] = useState([]);
   const [_selectedIdList, _setSelectedIdList] = useState([]);
   const [bestScore, _setBestScore] = useState(0);
@@ -289,14 +343,6 @@ const App = () => {
           }, Promise.resolve([]))
           .then((list) => {
             setPreloadPokemonList(list);
-            const tmp = pickItems(list.length, currentDifficulty).map(
-              (number) => {
-                const item = list[number];
-                return { ...item };
-              },
-            );
-            console.log(tmp);
-            _setCurrentPokemonList(tmp);
           });
       } catch (error) {
         console.log(error);
@@ -308,7 +354,19 @@ const App = () => {
     pokemonArrayPromises(
       "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
     );
-  }, [currentDifficulty]);
+  }, []);
+  useEffect(() => {
+    const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
+      (number) => {
+        const item = preloadPokemonList[number];
+        return { ...item };
+      },
+    );
+    _setCurrentPokemonList(tmp);
+    return () => {
+      console.log("change current difficult");
+    };
+  }, [currentDifficulty, preloadPokemonList]);
   useEffect(() => {
     setTimeout(() => {
       _setIsLoading(false);
