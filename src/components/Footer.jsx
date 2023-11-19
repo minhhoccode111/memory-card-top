@@ -34,7 +34,7 @@ const Footer = ({
         isOpen={isDisplayAbout}
         buttonOnClickCb={() => setIsDisplayAbout(!isDisplayAbout)}
       />
-      <Button text={"setting"} buttonOnClickCb={() => setIsSetting(false)} />
+      <Button text={"setting"} buttonOnClickCb={() => setIsSetting(true)} />
     </footer>
   );
 };

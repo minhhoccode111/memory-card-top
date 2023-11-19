@@ -5,13 +5,14 @@ import "./App.css";
 import { pickItems, shuffle } from "./components/Methods";
 import LoadingScreen from "./components/LoadingScreen";
 import MainPage from "./components/MainPage";
+// import * as Icon from "./components/Icons";
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
-  const [isLoading, _setIsLoading] = useState(false);
+  const [isLoading, _setIsLoading] = useState(true);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
