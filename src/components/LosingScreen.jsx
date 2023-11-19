@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import Button from "./Button";
-const LosingScreen = ({ playAgain }) => {
+const LosingScreen = ({ playAgain, playClick }) => {
   return (
     <section>
       <p>You lose!</p>
       <div>
-        <Button text={"Play again?"} buttonOnClickCb={playAgain} />
+        <Button
+          text={"Play again?"}
+          buttonOnClickCb={() => {
+            playAgain();
+            playClick();
+          }}
+        />
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import Button from "./Button";
 const Footer = ({
   isSoundOn,
   isMusicOn,
+  playClick,
   setIsSetting,
   setIsSoundOn,
   setIsMusicOn,
@@ -13,28 +14,46 @@ const Footer = ({
   setIsDisplayAbout,
 }) => {
   return (
-    <footer className="flex">
+    <footer className="flex bg-light">
       <ToggleButton
         text={"Sound"}
         isOpen={isSoundOn}
-        buttonOnClickCb={() => setIsSoundOn(!isSoundOn)}
+        buttonOnClickCb={() => {
+          playClick();
+          setIsSoundOn(!isSoundOn);
+        }}
       />
       <ToggleButton
         text={"Music"}
         isOpen={isMusicOn}
-        buttonOnClickCb={() => setIsMusicOn(!isMusicOn)}
+        buttonOnClickCb={() => {
+          playClick();
+          setIsMusicOn(!isMusicOn);
+        }}
       />
       <ToggleButton
         text={"Background video"}
         isOpen={isPlayingVideo}
-        buttonOnClickCb={() => setIsPlayingVideo(!isPlayingVideo)}
+        buttonOnClickCb={() => {
+          playClick();
+          setIsPlayingVideo(!isPlayingVideo);
+        }}
       />
       <ToggleButton
         text={"About"}
         isOpen={isDisplayAbout}
-        buttonOnClickCb={() => setIsDisplayAbout(!isDisplayAbout)}
+        buttonOnClickCb={() => {
+          playClick();
+          setIsDisplayAbout(!isDisplayAbout);
+        }}
       />
-      <Button text={"setting"} buttonOnClickCb={() => setIsSetting(true)} />
+      <Button
+        text={"setting"}
+        buttonOnClickCb={() => {
+          playClick();
+          setIsSetting(true);
+        }}
+      />
     </footer>
   );
 };

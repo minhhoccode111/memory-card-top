@@ -4,6 +4,7 @@ import Gameboard from "./Gameboard";
 
 const Playing = ({
   playTurn,
+  playClick,
   bestScore,
   setIsSetting,
   currentScore,
@@ -12,11 +13,16 @@ const Playing = ({
   return (
     <>
       <Header
+        playClick={playClick}
         bestScore={bestScore}
         currentScore={currentScore}
         setIsSetting={setIsSetting}
       />
-      <Gameboard playTurn={playTurn} currentPokemonList={currentPokemonList} />
+      <Gameboard
+        playTurn={playTurn}
+        playClick={playClick}
+        currentPokemonList={currentPokemonList}
+      />
     </>
   );
 };

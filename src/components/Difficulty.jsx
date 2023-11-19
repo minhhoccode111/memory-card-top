@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 import Button from "./Button";
-const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
+const Difficulty = ({
+  playAgain,
+  playClick,
+  setIsSetting,
+  setCurrentDifficulty,
+}) => {
   return (
     <section className="">
       <Button
         buttonOnClickCb={() => {
           setCurrentDifficulty(6);
           setIsSetting(false);
+          playClick();
           playAgain();
         }}
         text={"easy"}
@@ -15,6 +21,7 @@ const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
         buttonOnClickCb={() => {
           setCurrentDifficulty(10);
           setIsSetting(false);
+          playClick();
           playAgain();
         }}
         text={"medium"}
@@ -23,6 +30,7 @@ const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
         buttonOnClickCb={() => {
           setCurrentDifficulty(16);
           setIsSetting(false);
+          playClick();
           playAgain();
         }}
         text={"hard"}
@@ -31,6 +39,7 @@ const Difficulty = ({ setCurrentDifficulty, setIsSetting, playAgain }) => {
         buttonOnClickCb={() => {
           setCurrentDifficulty(24);
           setIsSetting(false);
+          playClick();
           playAgain();
         }}
         text={"insane"}

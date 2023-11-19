@@ -5,17 +5,20 @@ import "./App.css";
 import { pickItems, shuffle } from "./components/Methods";
 import LoadingScreen from "./components/LoadingScreen";
 import MainPage from "./components/MainPage";
-// import * as Icon from "./components/Icons";
+import * as Icon from "./components/Icons";
+import BackgroundVideo from "./assets/video/background-pokemon-unique.mp4";
+import BackgroundMusic from "./assets/sound/background-pokemon-unique.mp3";
+import ClickSound from "./assets/sound/click.wav";
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
-  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(true);
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
   const [isLoading, _setIsLoading] = useState(true);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 24; // 48 FIXME
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
@@ -24,6 +27,13 @@ const App = () => {
   const [_selectedIdList, _setSelectedIdList] = useState([]);
   const [bestScore, _setBestScore] = useState(0);
   const currentScore = _selectedIdList.length;
+  const playClick = () => {
+    if (isSoundOn) {
+      const audio = new Audio(ClickSound);
+      audio.volume = 0.3;
+      audio.play();
+    }
+  };
   const _randomPickInPreload = () => {
     const tmp = pickItems(preloadPokemonNumber, currentDifficulty).map(
       (number) => {
@@ -50,6 +60,7 @@ const App = () => {
       _setCurrentPokemonList(shuffle(currentPokemonList));
     }
   };
+
   useEffect(() => {
     const pokemonArrayPromises = async (url, index = 0) => {
       try {
@@ -110,8 +121,19 @@ const App = () => {
       _setIsLoading(false);
     }, 3500);
   }, []);
+  // these don't need useEffect
+  useEffect(() => {
+    const video = document.getElementById("backgroundVideo");
+    const music = document.getElementById("backgroundMusic");
+    music.volume = 0.2;
+    if (isPlayingVideo) video.play();
+    else video.pause();
+    if (isMusicOn) music.muted = false;
+    else music.muted = true;
+  }, [isMusicOn, isPlayingVideo]);
   return (
     <>
+      <Icon.Pokemon />
       {isLoading ? (
         <LoadingScreen />
       ) : (
@@ -134,8 +156,22 @@ const App = () => {
           currentScore={currentScore}
           playAgain={playAgain}
           playTurn={playTurn}
+          playClick={playClick}
         />
       )}
+      <video
+        loop
+        muted
+        autoPlay
+        id="backgroundVideo"
+        type="video/mp4"
+        className="h-full object-cover brightness-75 p-4 fixed w-full -z-10 top-0 left-0"
+      >
+        <source src={BackgroundVideo} type="video/mp4" />
+      </video>
+      <audio loop muted autoPlay id="backgroundMusic">
+        <source src={BackgroundMusic} type="audio/mp3" />
+      </audio>
     </>
   );
 };

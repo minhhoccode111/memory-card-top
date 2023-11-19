@@ -12,6 +12,7 @@ const MainPage = ({
   bestScore,
   playAgain,
   isSetting,
+  playClick,
   setIsSoundOn,
   setIsMusicOn,
   currentScore,
@@ -30,28 +31,35 @@ const MainPage = ({
     jsxToDisplay = (
       <Setting
         playAgain={playAgain}
+        playClick={playClick}
         setIsSetting={setIsSetting}
         setCurrentDifficulty={setCurrentDifficulty}
       />
     );
-  else if (isDisplayLose) jsxToDisplay = <LosingScreen playAgain={playAgain} />;
-  else if (isDisplayWin) jsxToDisplay = <WinningScreen playAgain={playAgain} />;
+  else if (isDisplayLose)
+    jsxToDisplay = <LosingScreen playClick={playClick} playAgain={playAgain} />;
+  else if (isDisplayWin)
+    jsxToDisplay = (
+      <WinningScreen playClick={playClick} playAgain={playAgain} />
+    );
   else
     jsxToDisplay = (
       <Playing
         playTurn={playTurn}
         bestScore={bestScore}
+        playClick={playClick}
         setIsSetting={setIsSetting}
         currentScore={currentScore}
         currentPokemonList={currentPokemonList}
       />
     );
   return (
-    <div id="wrapper" className="h-screen bg-slate-700 flex flex-col">
+    <div id="wrapper" className="h-full flex flex-col">
       {jsxToDisplay}
       <Footer
         isSoundOn={isSoundOn}
         isMusicOn={isMusicOn}
+        playClick={playClick}
         setIsSetting={setIsSetting}
         setIsMusicOn={setIsMusicOn}
         setIsSoundOn={setIsSoundOn}

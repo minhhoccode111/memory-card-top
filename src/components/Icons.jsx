@@ -1,9 +1,22 @@
 /* eslint-disable react/prop-types */
+import Artwork from "./../assets/image/pokemon-artwork.png";
 
 const obj = {
   width: "30px",
   height: "30px",
   color: "#0f0",
+};
+
+export const Pokemon = (props) => {
+  const styles = {
+    display: "block",
+    width: "100%",
+  };
+  return (
+    <div className={"aspect-square w-12 " + " " + props.customClass} {...props}>
+      <img src={Artwork} alt="Pokemon art work" style={styles} />
+    </div>
+  );
 };
 
 export const Github = (props) => (
