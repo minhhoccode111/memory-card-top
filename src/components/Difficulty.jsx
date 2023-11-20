@@ -7,7 +7,7 @@ const Difficulty = ({
   setCurrentDifficulty,
 }) => {
   return (
-    <section className="flex items-center justify-between gap-4 font-bold">
+    <section className="flex items-center justify-between gap-4 font-bold flex-wrap">
       <Button
         buttonOnClickCb={() => {
           setCurrentDifficulty(6);

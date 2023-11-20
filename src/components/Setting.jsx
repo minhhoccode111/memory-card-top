@@ -15,7 +15,7 @@ const Setting = ({
           buttonOnClickCb={() => console.log("Please stop clicking this title")}
         />
       </div>
-      <h2 className="text-5xl text-light font-extrabold underline underline-offset-8">
+      <h2 className="sm:text-5xl text-3xl text-light font-extrabold underline underline-offset-8">
         Choose difficulty
       </h2>
       <Difficulty

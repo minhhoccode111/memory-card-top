@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import Sound from "react-sound";
 import "./styles/flicker.css";
 import "./styles/button.css";
+import "./styles/roll-in.css";
 import "./App.css";
 import BackgroundVideo from "./assets/video/background-pokemon-unique.mp4";
 import BackgroundMusic from "./assets/sound/background-pokemon-unique.mp3";

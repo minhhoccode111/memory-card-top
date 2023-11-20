@@ -134,7 +134,7 @@ export const Heart = (props) => (
   </svg>
 );
 
-Github.defaultProps = normal;
+Github.defaultProps = smaller;
 Play.defaultProps = smaller;
 Pause.defaultProps = normal;
 Setting.defaultProps = smaller;
