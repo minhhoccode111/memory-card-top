@@ -2,8 +2,7 @@
 import Footer from "./Footer";
 import Setting from "./Setting";
 import Playing from "./Playing";
-import LosingScreen from "./LosingScreen";
-import WinningScreen from "./WinningScreen";
+import ResultScreen from "./ResultScreen";
 
 const MainPage = ({
   playTurn,
@@ -37,10 +36,20 @@ const MainPage = ({
       />
     );
   else if (isDisplayLose)
-    jsxToDisplay = <LosingScreen playClick={playClick} playAgain={playAgain} />;
+    jsxToDisplay = (
+      <ResultScreen
+        text={"you lose!!!"}
+        playClick={playClick}
+        playAgain={playAgain}
+      />
+    );
   else if (isDisplayWin)
     jsxToDisplay = (
-      <WinningScreen playClick={playClick} playAgain={playAgain} />
+      <ResultScreen
+        text={"you win!!!"}
+        playClick={playClick}
+        playAgain={playAgain}
+      />
     );
   else
     jsxToDisplay = (

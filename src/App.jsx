@@ -22,7 +22,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false); // FIXME
   const [canClickPlay, _setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
-  const [isDisplayLose, _setIsDisplayLose] = useState(false);
+  const [isDisplayLose, _setIsDisplayLose] = useState(true);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 24;

@@ -6,8 +6,8 @@
 }
 .hover-shadow:hover {
   box-shadow:
-    1px 1px #fbce00,
-    2px 2px #fbce00,
-    3px 3px #fbce00;
+    1px 1px #d6ae0c,
+    2px 2px #d6ae0c,
+    3px 3px #d6ae0c;
   transform: translateX(-3px);
 }
