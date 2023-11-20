@@ -21,8 +21,8 @@ const ToggleButton = ({ text, isOpen, buttonOnClickCb }) => {
     else text = <MusicOff />;
   }
   if (text === "video") {
-    if (isOpen) text = <Play />;
-    else text = <Pause />;
+    if (isOpen) text = <Pause />;
+    else text = <Play />;
   }
   if (text === "about") {
     if (isOpen) text = <Close />;

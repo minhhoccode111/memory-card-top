@@ -2,28 +2,34 @@
 import Tilt from "react-parallax-tilt";
 const Gameboard = ({ playTurn, currentPokemonList }) => {
   return (
-    <main className="flex-1 grid items-center justify-between grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 mx-auto gap-4 overflow-y-auto">
+    <main className="flex-1 grid-custom mt-8 mb-36 gap-4 overflow-y-auto p-1 overflow-x-hidden">
       {currentPokemonList.map((item) => (
-        <div key={item.id} className="">
-          <Tilt
-            glareEnable={true}
-            glareMaxOpacity={0.6}
-            glareColor="#ffffff"
-            glarePosition="bottom"
-            glareBorderRadius="20px"
+        <Tilt
+          key={item.id}
+          className="aspect-3/4 p-2 rounded-2xl sm:p-3 md:p-4 bg-darkFade"
+          glareEnable={true}
+          glareMaxOpacity={0.6}
+          glareColor="#ffffff"
+          glarePosition="bottom"
+          glareBorderRadius="16px"
+        >
+          <button
+            onClick={() => {
+              playTurn(item.id);
+            }}
+            className="flex flex-col justify-between w-full h-full rounded-2xl"
+            type="button"
           >
-            <button
-              onClick={() => {
-                playTurn(item.id);
-              }}
-              className="flex flex-col justify-between w-48 pt-4 bg-dark"
-              type="button"
-            >
-              <img src={item.imageLink} alt={"An image of " + item.name} />
-              <p className="capitalize bg-light text-darker p-4">{item.name}</p>
-            </button>
-          </Tilt>
-        </div>
+            <img
+              src={item.imageLink}
+              alt={"An image of " + item.name}
+              className="block w-full"
+            />
+            <p className="capitalize bg-transparent text-white w-full whitespace-nowrap overflow-x-auto">
+              {item.name}
+            </p>
+          </button>
+        </Tilt>
       ))}
     </main>
   );
