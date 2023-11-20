@@ -7,6 +7,9 @@ export default {
         darker: "#152A55",
         dark: "#355797",
         light: "#FBCE00",
+        lightFade: "#fbce0055",
+        darkerFade: "#152A5555",
+        darkFade: "#35579755",
         black: "#000",
         white: "#FFF",
         red: "#f02f12",
@@ -15,7 +18,7 @@ export default {
         transparent: "transparent",
       },
       aspectRatio: {
-        "3/1": "3/1.1",
+        "3/1": "3/1.2",
       },
     },
   },

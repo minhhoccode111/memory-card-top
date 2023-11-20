@@ -13,13 +13,15 @@ const smaller = {
   color: "#152A55",
 };
 
-export const Pokemon = (props) => {
+export const Pokemon = ({ type }) => {
   const styles = {
     display: "block",
     width: "100%",
   };
+  let classCustom =
+    type === "header" ? "w-48 sm:w-60 md:w-72 lg:w-84 xl:w-96" : null;
   return (
-    <div className={"aspect-3/1"} {...props}>
+    <div className={"aspect-3/1 " + classCustom}>
       <img
         src={Artwork}
         alt="Pokemon art work"

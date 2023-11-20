@@ -18,7 +18,7 @@ const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isMusicOn, setIsMusicOn] = useState(false);
-  const [isSetting, setIsSetting] = useState(true);
+  const [isSetting, setIsSetting] = useState(false); // FIXME
   const [isLoading, setIsLoading] = useState(false); // FIXME
   const [canClickPlay, _setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);

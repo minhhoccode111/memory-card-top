@@ -10,6 +10,7 @@ const Header = ({ playClick, bestScore, currentScore, setIsSetting }) => {
           setIsSetting(true);
           playClick();
         }}
+        type={"header"}
       />
       <DisplayScore bestScore={bestScore} currentScore={currentScore} />
     </header>

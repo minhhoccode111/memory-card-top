@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Pokemon } from "./Icons";
-const Title = ({ buttonOnClickCb }) => {
+const Title = ({ buttonOnClickCb, type = "default" }) => {
   return (
     <button type="button" title="Pokemon title" onClick={buttonOnClickCb}>
-      <Pokemon />
+      <Pokemon type={type} />
     </button>
   );
 };
