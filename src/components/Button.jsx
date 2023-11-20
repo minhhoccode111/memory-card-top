@@ -4,8 +4,11 @@ const Button = ({ text, buttonOnClickCb }) => {
     <div>
       <button
         type="button"
+        title={
+          "Button to play " + (text === "play" ? "" : "difficulty " + text)
+        }
         onClick={buttonOnClickCb}
-        className="hover-shadow capitalize"
+        className="hover-shadow capitalize rounded-lg px-4 py-2 text-light"
       >
         {text}
       </button>

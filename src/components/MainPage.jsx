@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
+import Footer from "./Footer";
 import Setting from "./Setting";
 import Playing from "./Playing";
-import Footer from "./Footer";
 import LosingScreen from "./LosingScreen";
 import WinningScreen from "./WinningScreen";
 

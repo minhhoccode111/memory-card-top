@@ -1,14 +1,44 @@
 /* eslint-disable react/prop-types */
+import {
+  Play,
+  Pause,
+  Close,
+  MusicOn,
+  SoundOn,
+  Setting,
+  Question,
+  MusicOff,
+  SoundOff,
+} from "./Icons";
 const ToggleButton = ({ text, isOpen, buttonOnClickCb }) => {
+  const title = "button to toggle" + " " + text;
+  if (text === "sound") {
+    if (isOpen) text = <SoundOn />;
+    else text = <SoundOff />;
+  }
+  if (text === "music") {
+    if (isOpen) text = <MusicOn />;
+    else text = <MusicOff />;
+  }
+  if (text === "video") {
+    if (isOpen) text = <Play />;
+    else text = <Pause />;
+  }
+  if (text === "about") {
+    if (isOpen) text = <Close />;
+    else text = <Question />;
+  }
+  if (text === "setting") text = <Setting />;
+
   return (
-    <div>
+    <div className="grid place-items-center rounded-full w-10 h-10 bg-light hover:scale-110 transition-transform">
       <button
         type="button"
+        title={title}
         onClick={buttonOnClickCb}
-        className={"hover-shadow"}
+        className="h-full w-full grid place-items-center"
       >
-        <span className="capitalize">{text}</span>
-        {isOpen ? " is on" : " is off"}
+        {text}
       </button>
     </div>
   );

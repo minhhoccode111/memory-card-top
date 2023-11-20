@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import Title from "./Title";
-import GameName from "./GameName";
 import Difficulty from "./Difficulty";
 
 const Setting = ({
@@ -10,9 +9,15 @@ const Setting = ({
   playClick,
 }) => {
   return (
-    <main className="flex flex-col items-center justify-center flex-1">
-      <Title />
-      <GameName />
+    <main className="flex relative flex-col items-center justify-center gap-12 flex-1">
+      <div className="my-28">
+        <Title
+          buttonOnClickCb={() => console.log("Please stop clicking this title")}
+        />
+      </div>
+      <h2 className="text-5xl text-light font-extrabold underline underline-offset-8">
+        Choose difficulty
+      </h2>
       <Difficulty
         playAgain={playAgain}
         playClick={playClick}

@@ -1,22 +1,25 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
+import Sound from "react-sound";
+import "./styles/flicker.css";
+import "./styles/button.css";
 import "./App.css";
-import { pickItems, shuffle } from "./components/Methods";
-import LoadingScreen from "./components/LoadingScreen";
-import MainPage from "./components/MainPage";
 import BackgroundVideo from "./assets/video/background-pokemon-unique.mp4";
 import BackgroundMusic from "./assets/sound/background-pokemon-unique.mp3";
+import { pickItems, shuffle } from "./components/Methods";
+import LoadingScreen from "./components/LoadingScreen";
 import ClickSound from "./assets/sound/click.wav";
 import FlipSound from "./assets/sound/flip.mp3";
-import Sound from "react-sound";
+import MainPage from "./components/MainPage";
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isMusicOn, setIsMusicOn] = useState(false);
-  const [isSetting, setIsSetting] = useState(false);
-  const [isLoading, _setIsLoading] = useState(true);
+  const [isSetting, setIsSetting] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // FIXME
+  const [canClickPlay, _setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
@@ -110,6 +113,9 @@ const App = () => {
     );
   }, []);
   useEffect(() => {
+    // when preload pokemon list is already done fetching (first load),
+    // or when current difficulty change then
+    // reset current pokemon list to pick pokemon in the preload pool
     try {
       const tmp = pickItems(preloadPokemonList.length, currentDifficulty).map(
         (number) => {
@@ -118,18 +124,15 @@ const App = () => {
         },
       );
       _setCurrentPokemonList(tmp);
-      return () => {
-        // console.log("change current difficult");
-      };
     } catch (error) {
       // console.log(error);
     }
   }, [currentDifficulty, preloadPokemonList]);
   useEffect(() => {
     setTimeout(() => {
-      _setIsLoading(false);
-    }, 3500);
-  }, []);
+      _setCanClickPlay(true);
+    }, 2500);
+  }, []); // FIXME TODO change back when done styling
   useEffect(() => {
     const video = document.getElementById("backgroundVideo");
     if (isPlayingVideo) video.play();
@@ -138,7 +141,10 @@ const App = () => {
   return (
     <>
       {isLoading ? (
-        <LoadingScreen />
+        <LoadingScreen
+          setIsLoading={setIsLoading}
+          canClickPlay={canClickPlay}
+        />
       ) : (
         <MainPage
           isSoundOn={isSoundOn}
@@ -168,14 +174,16 @@ const App = () => {
         autoPlay
         id="backgroundVideo"
         type="video/mp4"
-        className="h-full object-cover brightness-75 p-4 fixed w-full -z-10 top-0 left-0"
+        className="h-full object-cover brightness-75 fixed w-full -z-10 top-0 left-0 bg-white"
       >
         <source src={BackgroundVideo} type="video/mp4" />
       </video>
+      {/* background music */}
       <Sound
         volume={20}
         loop={true}
         url={BackgroundMusic}
+        ignoreMobileRestriction={true}
         playStatus={isMusicOn ? Sound.status.PLAYING : Sound.status.PAUSED}
       />
     </>
