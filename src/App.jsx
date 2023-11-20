@@ -18,11 +18,11 @@ const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [isMusicOn, setIsMusicOn] = useState(false);
-  const [isSetting, setIsSetting] = useState(false); // FIXME
-  const [isLoading, setIsLoading] = useState(false); // FIXME
+  const [isSetting, setIsSetting] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [canClickPlay, _setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
-  const [isDisplayLose, _setIsDisplayLose] = useState(true);
+  const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 24;
@@ -133,7 +133,7 @@ const App = () => {
     setTimeout(() => {
       _setCanClickPlay(true);
     }, 2500);
-  }, []); // FIXME TODO change back when done styling
+  }, []);
   useEffect(() => {
     const video = document.getElementById("backgroundVideo");
     if (isPlayingVideo) video.play();
@@ -143,6 +143,9 @@ const App = () => {
     <>
       {isLoading ? (
         <LoadingScreen
+          playClick={playClick}
+          isMusicOn={isMusicOn}
+          setIsMusicOn={setIsMusicOn}
           setIsLoading={setIsLoading}
           canClickPlay={canClickPlay}
         />

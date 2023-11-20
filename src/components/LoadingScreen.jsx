@@ -1,6 +1,13 @@
 /* eslint-disable react/prop-types */
+import ToggleButton from "./ToggleButton";
 import Button from "./Button";
-const LoadingScreen = ({ canClickPlay, setIsLoading }) => {
+const LoadingScreen = ({
+  playClick,
+  isMusicOn,
+  canClickPlay,
+  setIsLoading,
+  setIsMusicOn,
+}) => {
   const JSXToDisplay = canClickPlay && (
     <div className="text-flicker-in-glow font-bold text-3xl">
       <Button text={"play"} buttonOnClickCb={() => setIsLoading(false)} />
@@ -14,6 +21,16 @@ const LoadingScreen = ({ canClickPlay, setIsLoading }) => {
           Please wait...
         </h2>
         {JSXToDisplay}
+      </div>
+      <div className="fixed bottom-2 left-2">
+        <ToggleButton
+          text={"music"}
+          isOpen={isMusicOn}
+          buttonOnClickCb={() => {
+            playClick();
+            setIsMusicOn(!isMusicOn);
+          }}
+        />
       </div>
     </div>
   );

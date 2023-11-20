@@ -6,7 +6,7 @@ const ResultScreen = ({ text, playAgain, playClick }) => {
       <h2 className="sm:text-5xl uppercase text-3xl text-light font-extrabold underline underline-offset-8">
         {text}
       </h2>
-      <div className="font-bold">
+      <div className="font-bold text-3xl">
         <Button
           text={"Play again?"}
           buttonOnClickCb={() => {
