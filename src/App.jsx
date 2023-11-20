@@ -5,11 +5,11 @@ import "./App.css";
 import { pickItems, shuffle } from "./components/Methods";
 import LoadingScreen from "./components/LoadingScreen";
 import MainPage from "./components/MainPage";
-import * as Icon from "./components/Icons";
 import BackgroundVideo from "./assets/video/background-pokemon-unique.mp4";
 import BackgroundMusic from "./assets/sound/background-pokemon-unique.mp3";
 import ClickSound from "./assets/sound/click.wav";
 import FlipSound from "./assets/sound/flip.mp3";
+import Sound from "react-sound";
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
@@ -21,7 +21,7 @@ const App = () => {
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [isDisplayAbout, setIsDisplayAbout] = useState(false);
-  const preloadPokemonNumber = 24; // 48 FIXME
+  const preloadPokemonNumber = 24;
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 6, 10, 16, 24
   const [currentPokemonList, _setCurrentPokemonList] = useState([]);
@@ -130,19 +130,13 @@ const App = () => {
       _setIsLoading(false);
     }, 3500);
   }, []);
-  // these don't need useEffect
   useEffect(() => {
     const video = document.getElementById("backgroundVideo");
-    const music = document.getElementById("backgroundMusic");
-    music.volume = 0.2;
     if (isPlayingVideo) video.play();
     else video.pause();
-    if (isMusicOn) music.muted = false;
-    else music.muted = true;
-  }, [isMusicOn, isPlayingVideo]);
+  }, [isPlayingVideo]);
   return (
     <>
-      <Icon.Pokemon />
       {isLoading ? (
         <LoadingScreen />
       ) : (
@@ -178,9 +172,12 @@ const App = () => {
       >
         <source src={BackgroundVideo} type="video/mp4" />
       </video>
-      <audio loop muted autoPlay id="backgroundMusic">
-        <source src={BackgroundMusic} type="audio/mp3" />
-      </audio>
+      <Sound
+        volume={20}
+        loop={true}
+        url={BackgroundMusic}
+        playStatus={isMusicOn ? Sound.status.PLAYING : Sound.status.PAUSED}
+      />
     </>
   );
 };
