@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import Sound from "react-sound";
 import "./styles/flicker.css";
 import "./styles/button.css";
 import "./styles/roll-in.css";
@@ -13,6 +12,9 @@ import LoadingScreen from "./components/LoadingScreen";
 import ClickSound from "./assets/sound/click.wav";
 import FlipSound from "./assets/sound/flip.mp3";
 import MainPage from "./components/MainPage";
+
+const audio = new Audio(BackgroundMusic);
+audio.volume = 0.2;
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
@@ -139,6 +141,19 @@ const App = () => {
     if (isPlayingVideo) video.play();
     else video.pause();
   }, [isPlayingVideo]);
+  useEffect(() => {
+    if (isMusicOn) audio.play();
+    else audio.pause();
+    const playAudio = () => {
+      audio.currentTime = 0;
+      audio.play();
+    };
+    audio.addEventListener("ended", playAudio);
+
+    return () => {
+      audio.removeEventListener("ended", playAudio);
+    };
+  }, [isMusicOn]);
   return (
     <>
       {isLoading ? (
@@ -182,14 +197,6 @@ const App = () => {
       >
         <source src={BackgroundVideo} type="video/mp4" />
       </video>
-      {/* background music */}
-      <Sound
-        volume={20}
-        loop={true}
-        url={BackgroundMusic}
-        ignoreMobileRestriction={true}
-        playStatus={isMusicOn ? Sound.status.PLAYING : Sound.status.PAUSED}
-      />
     </>
   );
 };
