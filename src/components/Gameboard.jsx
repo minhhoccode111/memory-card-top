@@ -25,7 +25,7 @@ const Gameboard = ({ playTurn, currentPokemonList }) => {
               alt={"An image of " + item.name}
               className="block w-full"
             />
-            <p className="capitalize bg-transparent text-white w-full whitespace-nowrap overflow-x-auto">
+            <p className="capitalize bg-transparent text-white w-full whitespace-nowrap overflow-x-hidden">
               {item.name}
             </p>
           </button>
