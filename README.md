@@ -62,5 +62,6 @@ npm start
 
 ## **Navigation**
 
-- See my previous project [CV Application](https://cv-application-top.netlify.app/)
+- See my next project [Content Savior](https://github.com/minhhoccode111/content-savior)
+- See my previous project [CV Application](https://github.com/minhhoccode111/cv-application-top/)
 - See all my projects' live demos [This link](https://github.com/minhhoccode111/all-projects-live-demos)
