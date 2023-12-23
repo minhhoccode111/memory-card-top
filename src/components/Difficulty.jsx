@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useContext } from "react";
 import Button from "./Button";
-import { SetDifficultyContext } from "../App";
-const Difficulty = ({ playAgain, playClick, setIsSetting }) => {
-  const { setCurrentDifficulty } = useContext(SetDifficultyContext);
+import { DifficultyContext } from "../App";
+const Difficulty = ({ playClick, setIsSetting }) => {
+  const { playAgain, setCurrentDifficulty } = useContext(DifficultyContext);
   return (
     <section className="flex items-center justify-between gap-4 font-bold flex-wrap">
       <Button

@@ -9,7 +9,6 @@ const MainPage = ({
   isSoundOn,
   isMusicOn,
   bestScore,
-  playAgain,
   isSetting,
   playClick,
   setIsSoundOn,
@@ -23,28 +22,12 @@ const MainPage = ({
   let jsxToDisplay;
   if (isSetting)
     jsxToDisplay = (
-      <Setting
-        playAgain={playAgain}
-        playClick={playClick}
-        setIsSetting={setIsSetting}
-      />
+      <Setting playClick={playClick} setIsSetting={setIsSetting} />
     );
   else if (isDisplayLose)
-    jsxToDisplay = (
-      <ResultScreen
-        text={"you lose!!!"}
-        playClick={playClick}
-        playAgain={playAgain}
-      />
-    );
+    jsxToDisplay = <ResultScreen text={"you lose!!!"} playClick={playClick} />;
   else if (isDisplayWin)
-    jsxToDisplay = (
-      <ResultScreen
-        text={"you win!!!"}
-        playClick={playClick}
-        playAgain={playAgain}
-      />
-    );
+    jsxToDisplay = <ResultScreen text={"you win!!!"} playClick={playClick} />;
   else
     jsxToDisplay = (
       <Playing

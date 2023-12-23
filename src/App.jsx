@@ -16,8 +16,9 @@ import MainPage from "./components/MainPage";
 const music = new Audio(BackgroundMusic);
 music.volume = 0.2;
 
-export const SetDifficultyContext = createContext({
+export const DifficultyContext = createContext({
   setCurrentDifficulty: () => {},
+  playAgain: () => {},
 });
 
 const App = () => {
@@ -65,16 +66,14 @@ const App = () => {
     _randomPickInPreload();
   };
   const playTurn = (pokemonId) => {
-    if (_selectedIdList.includes(pokemonId)) {
-      _setIsDisplayLose(true);
-    } else {
-      if (currentScore === bestScore) _setBestScore(bestScore + 1);
-      const nextScore = currentScore + 1;
-      if (nextScore === currentDifficulty) _setIsDisplayWin(true); // win condition
-      _setSelectedIdList([..._selectedIdList, pokemonId]);
-      _setCurrentPokemonList(shuffle(currentPokemonList));
-      playFlip();
-    }
+    // lose condition
+    if (_selectedIdList.includes(pokemonId)) return _setIsDisplayLose(true);
+    if (currentScore === bestScore) _setBestScore(bestScore + 1); // increase best score next render
+    const nextScore = currentScore + 1; // increase next score next render
+    if (nextScore === currentDifficulty) _setIsDisplayWin(true); // win condition
+    _setSelectedIdList([..._selectedIdList, pokemonId]);
+    _setCurrentPokemonList(shuffle(currentPokemonList));
+    playFlip();
   };
 
   useEffect(() => {
@@ -156,7 +155,7 @@ const App = () => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <SetDifficultyContext.Provider value={{ setCurrentDifficulty }}>
+        <DifficultyContext.Provider value={{ playAgain, setCurrentDifficulty }}>
           <MainPage
             isSoundOn={isSoundOn}
             setIsSoundOn={setIsSoundOn}
@@ -169,11 +168,10 @@ const App = () => {
             currentPokemonList={currentPokemonList}
             bestScore={bestScore}
             currentScore={currentScore}
-            playAgain={playAgain}
             playTurn={playTurn}
             playClick={playClick}
           />
-        </SetDifficultyContext.Provider>
+        </DifficultyContext.Provider>
       )}
       <video
         loop
