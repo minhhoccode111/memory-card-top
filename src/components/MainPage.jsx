@@ -19,8 +19,6 @@ const MainPage = ({
   setIsSetting,
   isDisplayLose,
   isPlayingVideo,
-  isDisplayAbout,
-  setIsDisplayAbout,
   setIsPlayingVideo,
   currentPokemonList,
   setCurrentDifficulty,
@@ -73,8 +71,6 @@ const MainPage = ({
         setIsMusicOn={setIsMusicOn}
         setIsSoundOn={setIsSoundOn}
         isPlayingVideo={isPlayingVideo}
-        isDisplayAbout={isDisplayAbout}
-        setIsDisplayAbout={setIsDisplayAbout}
         setIsPlayingVideo={setIsPlayingVideo}
       />
     </div>

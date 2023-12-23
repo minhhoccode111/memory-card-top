@@ -25,7 +25,6 @@ const App = () => {
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
-  const [isDisplayAbout, setIsDisplayAbout] = useState(false);
   const preloadPokemonNumber = 24;
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 6, 10, 16, 24
@@ -166,8 +165,6 @@ const App = () => {
           setIsMusicOn={setIsMusicOn}
           isPlayingVideo={isPlayingVideo}
           setIsPlayingVideo={setIsPlayingVideo}
-          isDisplayAbout={isDisplayAbout}
-          setIsDisplayAbout={setIsDisplayAbout}
           isDisplayWin={isDisplayWin}
           isDisplayLose={isDisplayLose}
           isSetting={isSetting}

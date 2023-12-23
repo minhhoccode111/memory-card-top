@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { Github } from "./Icons";
 import ToggleButton from "./ToggleButton";
 const Footer = ({
@@ -16,12 +17,9 @@ const Footer = ({
 
   isPlayingVideo,
 
-  isDisplayAbout,
-
   setIsPlayingVideo,
-
-  setIsDisplayAbout,
 }) => {
+  const [isDisplayAbout, setIsDisplayAbout] = useState(true);
   return (
     <footer className="flex justify-between overflow-x-auto overflow-y-hidden fixed bottom-0 w-screen bg-lightFade">
       <div className="p-2 gap-2 sm:gap-4 sm:p-4 flex items-center">
