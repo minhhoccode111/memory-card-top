@@ -18,8 +18,6 @@ const MainPage = ({
   isDisplayWin,
   setIsSetting,
   isDisplayLose,
-  isPlayingVideo,
-  setIsPlayingVideo,
   currentPokemonList,
   setCurrentDifficulty,
 }) => {
@@ -70,8 +68,6 @@ const MainPage = ({
         setIsSetting={setIsSetting}
         setIsMusicOn={setIsMusicOn}
         setIsSoundOn={setIsSoundOn}
-        isPlayingVideo={isPlayingVideo}
-        setIsPlayingVideo={setIsPlayingVideo}
       />
     </div>
   );

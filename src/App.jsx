@@ -24,7 +24,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const preloadPokemonNumber = 24;
   const [preloadPokemonList, setPreloadPokemonList] = useState([]);
   const [currentDifficulty, setCurrentDifficulty] = useState(6); // 6, 10, 16, 24
@@ -131,11 +130,6 @@ const App = () => {
   }, [currentDifficulty, preloadPokemonList]);
 
   useEffect(() => {
-    const video = document.getElementById("backgroundVideo");
-    if (isPlayingVideo) video.play();
-    else video.pause();
-  }, [isPlayingVideo]);
-  useEffect(() => {
     if (isMusicOn) music.play();
     else music.pause();
     const playAudio = () => {
@@ -163,8 +157,6 @@ const App = () => {
           setIsSoundOn={setIsSoundOn}
           isMusicOn={isMusicOn}
           setIsMusicOn={setIsMusicOn}
-          isPlayingVideo={isPlayingVideo}
-          setIsPlayingVideo={setIsPlayingVideo}
           isDisplayWin={isDisplayWin}
           isDisplayLose={isDisplayLose}
           isSetting={isSetting}
