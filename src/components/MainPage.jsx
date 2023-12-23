@@ -24,7 +24,6 @@ const MainPage = ({
     jsxToDisplay = (
       <Playing
         bestScore={bestScore}
-        playClick={playClick}
         setIsSetting={setIsSetting}
         currentScore={currentScore}
       />
@@ -35,7 +34,6 @@ const MainPage = ({
       <Footer
         isSoundOn={isSoundOn}
         isMusicOn={isMusicOn}
-        playClick={playClick}
         setIsSetting={setIsSetting}
         setIsMusicOn={setIsMusicOn}
         setIsSoundOn={setIsSoundOn}

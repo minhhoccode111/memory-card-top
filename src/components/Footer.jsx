@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { GameboardContext } from "../App";
 import { Github } from "./Icons";
 import ToggleButton from "./ToggleButton";
 const Footer = ({
   isSoundOn,
 
   isMusicOn,
-
-  playClick,
 
   setIsSetting,
 
@@ -17,6 +16,7 @@ const Footer = ({
 }) => {
   const [isDisplayAbout, setIsDisplayAbout] = useState(true);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
+  const { playClick } = useContext(GameboardContext);
 
   useEffect(() => {
     const video = document.getElementById("backgroundVideo");
