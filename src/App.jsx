@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./styles/flicker.css";
@@ -13,8 +12,9 @@ import ClickSound from "./assets/sound/click.wav";
 import FlipSound from "./assets/sound/flip.mp3";
 import MainPage from "./components/MainPage";
 
-const audio = new Audio(BackgroundMusic);
-audio.volume = 0.2;
+// this must be global because we don't want to create new music track every time a component rerender
+const music = new Audio(BackgroundMusic);
+music.volume = 0.2;
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
@@ -22,7 +22,6 @@ const App = () => {
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [canClickPlay, _setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
@@ -69,7 +68,7 @@ const App = () => {
     } else {
       if (currentScore === bestScore) _setBestScore(bestScore + 1);
       const nextScore = currentScore + 1;
-      if (nextScore === currentDifficulty) _setIsDisplayWin(true);
+      if (nextScore === currentDifficulty) _setIsDisplayWin(true); // win condition
       _setSelectedIdList([..._selectedIdList, pokemonId]);
       _setCurrentPokemonList(shuffle(currentPokemonList));
       playFlip();
@@ -131,27 +130,23 @@ const App = () => {
       // console.log(error);
     }
   }, [currentDifficulty, preloadPokemonList]);
-  useEffect(() => {
-    setTimeout(() => {
-      _setCanClickPlay(true);
-    }, 2500);
-  }, []);
+
   useEffect(() => {
     const video = document.getElementById("backgroundVideo");
     if (isPlayingVideo) video.play();
     else video.pause();
   }, [isPlayingVideo]);
   useEffect(() => {
-    if (isMusicOn) audio.play();
-    else audio.pause();
+    if (isMusicOn) music.play();
+    else music.pause();
     const playAudio = () => {
-      audio.currentTime = 0;
-      audio.play();
+      music.currentTime = 0;
+      music.play();
     };
-    audio.addEventListener("ended", playAudio);
+    music.addEventListener("ended", playAudio);
 
     return () => {
-      audio.removeEventListener("ended", playAudio);
+      music.removeEventListener("ended", playAudio);
     };
   }, [isMusicOn]);
   return (
@@ -162,7 +157,6 @@ const App = () => {
           isMusicOn={isMusicOn}
           setIsMusicOn={setIsMusicOn}
           setIsLoading={setIsLoading}
-          canClickPlay={canClickPlay}
         />
       ) : (
         <MainPage
