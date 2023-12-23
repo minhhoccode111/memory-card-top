@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import { v4 as uuid } from "uuid";
 import "./styles/flicker.css";
 import "./styles/button.css";
@@ -15,6 +15,10 @@ import MainPage from "./components/MainPage";
 // this must be global because we don't want to create new music track every time a component rerender
 const music = new Audio(BackgroundMusic);
 music.volume = 0.2;
+
+export const SetDifficultyContext = createContext({
+  setCurrentDifficulty: () => {},
+});
 
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
@@ -152,23 +156,24 @@ const App = () => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <MainPage
-          isSoundOn={isSoundOn}
-          setIsSoundOn={setIsSoundOn}
-          isMusicOn={isMusicOn}
-          setIsMusicOn={setIsMusicOn}
-          isDisplayWin={isDisplayWin}
-          isDisplayLose={isDisplayLose}
-          isSetting={isSetting}
-          setIsSetting={setIsSetting}
-          setCurrentDifficulty={setCurrentDifficulty}
-          currentPokemonList={currentPokemonList}
-          bestScore={bestScore}
-          currentScore={currentScore}
-          playAgain={playAgain}
-          playTurn={playTurn}
-          playClick={playClick}
-        />
+        <SetDifficultyContext.Provider value={{ setCurrentDifficulty }}>
+          <MainPage
+            isSoundOn={isSoundOn}
+            setIsSoundOn={setIsSoundOn}
+            isMusicOn={isMusicOn}
+            setIsMusicOn={setIsMusicOn}
+            isDisplayWin={isDisplayWin}
+            isDisplayLose={isDisplayLose}
+            isSetting={isSetting}
+            setIsSetting={setIsSetting}
+            currentPokemonList={currentPokemonList}
+            bestScore={bestScore}
+            currentScore={currentScore}
+            playAgain={playAgain}
+            playTurn={playTurn}
+            playClick={playClick}
+          />
+        </SetDifficultyContext.Provider>
       )}
       <video
         loop

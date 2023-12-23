@@ -2,12 +2,7 @@
 import Title from "./Title";
 import Difficulty from "./Difficulty";
 
-const Setting = ({
-  setCurrentDifficulty,
-  setIsSetting,
-  playAgain,
-  playClick,
-}) => {
+const Setting = ({ setIsSetting, playAgain, playClick }) => {
   return (
     <main className="flex relative flex-col items-center justify-center gap-12 flex-1">
       <div className="my-28">
@@ -22,7 +17,6 @@ const Setting = ({
         playAgain={playAgain}
         playClick={playClick}
         setIsSetting={setIsSetting}
-        setCurrentDifficulty={setCurrentDifficulty}
       />
     </main>
   );

@@ -19,7 +19,6 @@ const MainPage = ({
   setIsSetting,
   isDisplayLose,
   currentPokemonList,
-  setCurrentDifficulty,
 }) => {
   let jsxToDisplay;
   if (isSetting)
@@ -28,7 +27,6 @@ const MainPage = ({
         playAgain={playAgain}
         playClick={playClick}
         setIsSetting={setIsSetting}
-        setCurrentDifficulty={setCurrentDifficulty}
       />
     );
   else if (isDisplayLose)

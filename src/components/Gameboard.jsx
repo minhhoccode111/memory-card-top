@@ -19,6 +19,7 @@ const Gameboard = ({ playTurn, currentPokemonList }) => {
             }}
             className="flex flex-col justify-between w-full h-full rounded-2xl"
             type="button"
+            key={item.id}
           >
             <img
               src={item.imageLink}
