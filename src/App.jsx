@@ -46,6 +46,7 @@ const App = () => {
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [canClickPlay, setCanClickPlay] = useState(false);
   const [isDisplayWin, _setIsDisplayWin] = useState(false);
   const [isDisplayLose, _setIsDisplayLose] = useState(false);
   const preloadPokemonNumber = 24;
@@ -54,6 +55,13 @@ const App = () => {
   const [currentPokemonList, _setCurrentPokemonList] = useState([]);
   const [_selectedIdList, _setSelectedIdList] = useState([]);
   const [bestScore, _setBestScore] = useState(0);
+  useEffect(() => {
+    const data = localStorage.getItem("unique-pokemon-best-score");
+    if (data !== null) {
+      const bestScore = JSON.parse(data);
+      _setBestScore(bestScore);
+    }
+  }, []);
   const currentScore = _selectedIdList.length;
   const playClick = () => {
     if (isSoundOn) {
@@ -87,7 +95,13 @@ const App = () => {
   const playTurn = (pokemonId) => {
     // lose condition
     if (_selectedIdList.includes(pokemonId)) return _setIsDisplayLose(true);
-    if (currentScore === bestScore) _setBestScore(bestScore + 1); // increase best score next render
+    if (currentScore === bestScore) {
+      _setBestScore(bestScore + 1); // increase best score next render
+      localStorage.setItem(
+        "unique-pokemon-best-score",
+        JSON.stringify(bestScore + 1),
+      );
+    }
     const nextScore = currentScore + 1; // increase next score next render
     if (nextScore === currentDifficulty) _setIsDisplayWin(true); // win condition
     _setSelectedIdList([..._selectedIdList, pokemonId]);
@@ -128,6 +142,8 @@ const App = () => {
         // recursive try 3 more times
         if (index === 3) return;
         pokemonArrayPromises(url, index + 1);
+      } finally {
+        setCanClickPlay(true);
       }
     };
     pokemonArrayPromises(
@@ -172,6 +188,7 @@ const App = () => {
           isMusicOn={isMusicOn}
           setIsMusicOn={setIsMusicOn}
           setIsLoading={setIsLoading}
+          canClickPlay={canClickPlay}
         />
       ) : (
         <SettingContext.Provider

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
 import ToggleButton from "./ToggleButton";
 import Button from "./Button";
 
@@ -8,11 +7,8 @@ const LoadingScreen = ({
   isMusicOn,
   setIsLoading,
   setIsMusicOn,
+  canClickPlay,
 }) => {
-  const [canClickPlay, _setCanClickPlay] = useState(false);
-  useEffect(() => {
-    setTimeout(() => _setCanClickPlay(true), 2500);
-  }, []);
   const JSXToDisplay = canClickPlay && (
     <div className="text-flicker-in-glow font-bold text-3xl">
       <Button text={"play"} buttonOnClickCb={() => setIsLoading(false)} />
