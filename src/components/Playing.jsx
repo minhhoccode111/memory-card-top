@@ -2,10 +2,10 @@
 import Header from "./Header";
 import Gameboard from "./Gameboard";
 
-const Playing = ({ bestScore, currentScore }) => {
+const Playing = () => {
   return (
     <>
-      <Header bestScore={bestScore} currentScore={currentScore} />
+      <Header />
       <Gameboard />
     </>
   );

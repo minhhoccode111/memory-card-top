@@ -35,6 +35,11 @@ export const SettingContext = createContext({
   setIsMusicOn: () => {},
 });
 
+export const ScoreContext = createContext({
+  bestScore: 0,
+  currentScore: 0,
+});
+
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -178,21 +183,21 @@ const App = () => {
             setIsMusicOn,
           }}
         >
-          <GameboardContext.Provider
-            value={{ currentPokemonList, playTurn, playClick }}
-          >
-            <DifficultyContext.Provider
-              value={{ playAgain, setCurrentDifficulty }}
+          <ScoreContext.Provider value={{ bestScore, currentScore }}>
+            <GameboardContext.Provider
+              value={{ currentPokemonList, playTurn, playClick }}
             >
-              <MainPage
-                isDisplayWin={isDisplayWin}
-                isDisplayLose={isDisplayLose}
-                isSetting={isSetting}
-                bestScore={bestScore}
-                currentScore={currentScore}
-              />
-            </DifficultyContext.Provider>
-          </GameboardContext.Provider>
+              <DifficultyContext.Provider
+                value={{ playAgain, setCurrentDifficulty }}
+              >
+                <MainPage
+                  isDisplayWin={isDisplayWin}
+                  isDisplayLose={isDisplayLose}
+                  isSetting={isSetting}
+                />
+              </DifficultyContext.Provider>
+            </GameboardContext.Provider>
+          </ScoreContext.Provider>
         </SettingContext.Provider>
       )}
       <video

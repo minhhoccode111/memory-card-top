@@ -4,7 +4,7 @@ import DisplayScore from "./DisplayScore";
 import { GameboardContext, SettingContext } from "../App";
 import { useContext } from "react";
 
-const Header = ({ bestScore, currentScore }) => {
+const Header = () => {
   const { playClick } = useContext(GameboardContext);
   const { setIsSetting } = useContext(SettingContext);
   return (
@@ -16,7 +16,7 @@ const Header = ({ bestScore, currentScore }) => {
         }}
         type={"header"}
       />
-      <DisplayScore bestScore={bestScore} currentScore={currentScore} />
+      <DisplayScore />
     </header>
   );
 };
