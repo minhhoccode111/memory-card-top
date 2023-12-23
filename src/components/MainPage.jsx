@@ -5,39 +5,24 @@ import Playing from "./Playing";
 import ResultScreen from "./ResultScreen";
 
 const MainPage = ({
-  isSoundOn,
-  isMusicOn,
   bestScore,
   isSetting,
-  setIsSoundOn,
-  setIsMusicOn,
   currentScore,
   isDisplayWin,
-  setIsSetting,
   isDisplayLose,
 }) => {
   let jsxToDisplay;
-  if (isSetting) jsxToDisplay = <Setting setIsSetting={setIsSetting} />;
+  if (isSetting) jsxToDisplay = <Setting />;
   else if (isDisplayLose) jsxToDisplay = <ResultScreen text={"you lose!!!"} />;
   else if (isDisplayWin) jsxToDisplay = <ResultScreen text={"you win!!!"} />;
   else
     jsxToDisplay = (
-      <Playing
-        bestScore={bestScore}
-        setIsSetting={setIsSetting}
-        currentScore={currentScore}
-      />
+      <Playing bestScore={bestScore} currentScore={currentScore} />
     );
   return (
     <div id="wrapper" className="h-full flex flex-col">
       {jsxToDisplay}
-      <Footer
-        isSoundOn={isSoundOn}
-        isMusicOn={isMusicOn}
-        setIsSetting={setIsSetting}
-        setIsMusicOn={setIsMusicOn}
-        setIsSoundOn={setIsSoundOn}
-      />
+      <Footer />
     </div>
   );
 };

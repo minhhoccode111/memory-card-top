@@ -2,14 +2,10 @@
 import Header from "./Header";
 import Gameboard from "./Gameboard";
 
-const Playing = ({ bestScore, setIsSetting, currentScore }) => {
+const Playing = ({ bestScore, currentScore }) => {
   return (
     <>
-      <Header
-        bestScore={bestScore}
-        currentScore={currentScore}
-        setIsSetting={setIsSetting}
-      />
+      <Header bestScore={bestScore} currentScore={currentScore} />
       <Gameboard />
     </>
   );

@@ -27,6 +27,14 @@ export const GameboardContext = createContext({
   playClick: () => {},
 });
 
+export const SettingContext = createContext({
+  isSoundOn: true,
+  isMusicOn: false,
+  setIsSetting: () => {},
+  setIsSoundOn: () => {},
+  setIsMusicOn: () => {},
+});
+
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -161,26 +169,31 @@ const App = () => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <GameboardContext.Provider
-          value={{ currentPokemonList, playTurn, playClick }}
+        <SettingContext.Provider
+          value={{
+            isSoundOn,
+            isMusicOn,
+            setIsSetting,
+            setIsSoundOn,
+            setIsMusicOn,
+          }}
         >
-          <DifficultyContext.Provider
-            value={{ playAgain, setCurrentDifficulty }}
+          <GameboardContext.Provider
+            value={{ currentPokemonList, playTurn, playClick }}
           >
-            <MainPage
-              isSoundOn={isSoundOn}
-              setIsSoundOn={setIsSoundOn}
-              isMusicOn={isMusicOn}
-              setIsMusicOn={setIsMusicOn}
-              isDisplayWin={isDisplayWin}
-              isDisplayLose={isDisplayLose}
-              isSetting={isSetting}
-              setIsSetting={setIsSetting}
-              bestScore={bestScore}
-              currentScore={currentScore}
-            />
-          </DifficultyContext.Provider>
-        </GameboardContext.Provider>
+            <DifficultyContext.Provider
+              value={{ playAgain, setCurrentDifficulty }}
+            >
+              <MainPage
+                isDisplayWin={isDisplayWin}
+                isDisplayLose={isDisplayLose}
+                isSetting={isSetting}
+                bestScore={bestScore}
+                currentScore={currentScore}
+              />
+            </DifficultyContext.Provider>
+          </GameboardContext.Provider>
+        </SettingContext.Provider>
       )}
       <video
         loop
