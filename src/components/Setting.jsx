@@ -2,7 +2,7 @@
 import Title from "./Title";
 import Difficulty from "./Difficulty";
 
-const Setting = ({ setIsSetting, playAgain, playClick }) => {
+const Setting = ({ setIsSetting, playAgain }) => {
   return (
     <main className="flex relative flex-col items-center justify-center gap-12 flex-1">
       <div className="my-28">
@@ -13,11 +13,7 @@ const Setting = ({ setIsSetting, playAgain, playClick }) => {
       <h2 className="sm:text-5xl text-3xl text-light font-extrabold underline underline-offset-8">
         Choose difficulty
       </h2>
-      <Difficulty
-        playAgain={playAgain}
-        playClick={playClick}
-        setIsSetting={setIsSetting}
-      />
+      <Difficulty playAgain={playAgain} setIsSetting={setIsSetting} />
     </main>
   );
 };

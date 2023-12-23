@@ -24,6 +24,7 @@ export const DifficultyContext = createContext({
 export const GameboardContext = createContext({
   currentPokemonList: [],
   playTurn: () => {},
+  playClick: () => {},
 });
 
 const App = () => {
@@ -160,7 +161,9 @@ const App = () => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <GameboardContext.Provider value={{ currentPokemonList, playTurn }}>
+        <GameboardContext.Provider
+          value={{ currentPokemonList, playTurn, playClick }}
+        >
           <DifficultyContext.Provider
             value={{ playAgain, setCurrentDifficulty }}
           >
@@ -175,7 +178,6 @@ const App = () => {
               setIsSetting={setIsSetting}
               bestScore={bestScore}
               currentScore={currentScore}
-              playClick={playClick}
             />
           </DifficultyContext.Provider>
         </GameboardContext.Provider>

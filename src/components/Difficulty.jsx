@@ -2,7 +2,9 @@
 import { useContext } from "react";
 import Button from "./Button";
 import { DifficultyContext } from "../App";
-const Difficulty = ({ playClick, setIsSetting }) => {
+import { GameboardContext } from "../App";
+const Difficulty = ({ setIsSetting }) => {
+  const { playClick } = useContext(GameboardContext);
   const { playAgain, setCurrentDifficulty } = useContext(DifficultyContext);
   return (
     <section className="flex items-center justify-between gap-4 font-bold flex-wrap">
