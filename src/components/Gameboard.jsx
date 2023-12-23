@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
+import { GameboardContext } from "../App";
+import { useContext } from "react";
 import Tilt from "react-parallax-tilt";
-const Gameboard = ({ playTurn, currentPokemonList }) => {
+const Gameboard = () => {
+  const { playTurn, currentPokemonList } = useContext(GameboardContext);
   return (
     <main className="flex-1 grid-custom mt-8 mb-36 gap-4 overflow-y-auto p-1 overflow-x-hidden">
       {currentPokemonList.map((item) => (

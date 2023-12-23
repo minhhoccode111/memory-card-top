@@ -5,7 +5,6 @@ import Playing from "./Playing";
 import ResultScreen from "./ResultScreen";
 
 const MainPage = ({
-  playTurn,
   isSoundOn,
   isMusicOn,
   bestScore,
@@ -17,7 +16,6 @@ const MainPage = ({
   isDisplayWin,
   setIsSetting,
   isDisplayLose,
-  currentPokemonList,
 }) => {
   let jsxToDisplay;
   if (isSetting)
@@ -31,12 +29,10 @@ const MainPage = ({
   else
     jsxToDisplay = (
       <Playing
-        playTurn={playTurn}
         bestScore={bestScore}
         playClick={playClick}
         setIsSetting={setIsSetting}
         currentScore={currentScore}
-        currentPokemonList={currentPokemonList}
       />
     );
   return (

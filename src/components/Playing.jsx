@@ -2,14 +2,7 @@
 import Header from "./Header";
 import Gameboard from "./Gameboard";
 
-const Playing = ({
-  playTurn,
-  playClick,
-  bestScore,
-  setIsSetting,
-  currentScore,
-  currentPokemonList,
-}) => {
+const Playing = ({ playClick, bestScore, setIsSetting, currentScore }) => {
   return (
     <>
       <Header
@@ -18,7 +11,7 @@ const Playing = ({
         currentScore={currentScore}
         setIsSetting={setIsSetting}
       />
-      <Gameboard playTurn={playTurn} currentPokemonList={currentPokemonList} />
+      <Gameboard />
     </>
   );
 };

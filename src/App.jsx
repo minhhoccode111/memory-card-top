@@ -21,6 +21,11 @@ export const DifficultyContext = createContext({
   playAgain: () => {},
 });
 
+export const GameboardContext = createContext({
+  currentPokemonList: [],
+  playTurn: () => {},
+});
+
 const App = () => {
   // variable starts with _ is private and should not be passed to other components
   const [isSoundOn, setIsSoundOn] = useState(true);
@@ -43,7 +48,7 @@ const App = () => {
       audio.play();
     }
   };
-  const playFlip = () => {
+  const _playFlip = () => {
     if (isSoundOn) {
       const audio = new Audio(FlipSound);
       audio.volume = 0.2;
@@ -73,7 +78,7 @@ const App = () => {
     if (nextScore === currentDifficulty) _setIsDisplayWin(true); // win condition
     _setSelectedIdList([..._selectedIdList, pokemonId]);
     _setCurrentPokemonList(shuffle(currentPokemonList));
-    playFlip();
+    _playFlip();
   };
 
   useEffect(() => {
@@ -155,23 +160,25 @@ const App = () => {
           setIsLoading={setIsLoading}
         />
       ) : (
-        <DifficultyContext.Provider value={{ playAgain, setCurrentDifficulty }}>
-          <MainPage
-            isSoundOn={isSoundOn}
-            setIsSoundOn={setIsSoundOn}
-            isMusicOn={isMusicOn}
-            setIsMusicOn={setIsMusicOn}
-            isDisplayWin={isDisplayWin}
-            isDisplayLose={isDisplayLose}
-            isSetting={isSetting}
-            setIsSetting={setIsSetting}
-            currentPokemonList={currentPokemonList}
-            bestScore={bestScore}
-            currentScore={currentScore}
-            playTurn={playTurn}
-            playClick={playClick}
-          />
-        </DifficultyContext.Provider>
+        <GameboardContext.Provider value={{ currentPokemonList, playTurn }}>
+          <DifficultyContext.Provider
+            value={{ playAgain, setCurrentDifficulty }}
+          >
+            <MainPage
+              isSoundOn={isSoundOn}
+              setIsSoundOn={setIsSoundOn}
+              isMusicOn={isMusicOn}
+              setIsMusicOn={setIsMusicOn}
+              isDisplayWin={isDisplayWin}
+              isDisplayLose={isDisplayLose}
+              isSetting={isSetting}
+              setIsSetting={setIsSetting}
+              bestScore={bestScore}
+              currentScore={currentScore}
+              playClick={playClick}
+            />
+          </DifficultyContext.Provider>
+        </GameboardContext.Provider>
       )}
       <video
         loop
